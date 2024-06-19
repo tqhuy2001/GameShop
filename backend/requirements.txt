@@ -1,0 +1,6 @@
+fastapi==0.111.0
+SQLAlchemy==2.0.30
+pydantic==2.7.4
+PyMySQL==1.1.1
+mysql==0.0.3
+PyJWT==2.8.0
