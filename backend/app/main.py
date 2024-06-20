@@ -11,6 +11,7 @@ app = FastAPI()
 user.Base.metadata.create_all(bind=engine)
 game.Base.metadata.create_all(bind=engine)
 
+print(1)
 
 origins = [
     'http://localhost:8005',
