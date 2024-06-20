@@ -14,7 +14,7 @@ class UserBase(BaseModel):
     create_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attrbutes = True
 
 class UserLogin(BaseModel):
     username: str

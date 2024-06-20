@@ -1,6 +1,8 @@
 from sqlalchemy import Column, String, Integer, TIMESTAMP, ForeignKey
 from sqlalchemy.sql.expression import text
+from sqlalchemy.orm import relationship
 
+from .user import User
 from app.core.database import Base
 
 class Game(Base):
@@ -13,3 +15,5 @@ class Game(Base):
     create_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
 
     owner_id = Column(Integer, ForeignKey(('users.id'), ondelete='CASCADE'), nullable=False)
+
+    owner = relationship('User')

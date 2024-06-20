@@ -1,9 +1,10 @@
 from fastapi import APIRouter, HTTPException, Depends, status
 from sqlalchemy.orm import Session
+from typing import Optional
 
 from app.core.dependencies import get_db
 from app.schemas.game import GameBase, GameAdd, GameUpdate
-from . import crud_game
+from app.api.endpoints.game import crud_game
 from app.api.endpoints.login import oauth2
 
 game = APIRouter()
@@ -15,10 +16,17 @@ def get_all_games(db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Not found any games')
     return db_games
 
-@game.get('/{id}', response_model=GameBase)
+@game.get('/id_game/{id}', response_model=GameBase)
 def get_game_by_id(id: int, db: Session = Depends(get_db)):
     db_game = crud_game.get_game_by_id(db, id)
     if db_game is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Not found game')
+    return db_game
+
+@game.get('/search', response_model=list[GameBase])
+def get_games(search: Optional[str] = '', limit: int = 100, db: Session = Depends(get_db)):
+    db_game = crud_game.get_games(db, search, limit)
+    if len(db_game) == 0:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Not found game')
     return db_game
 
@@ -30,7 +38,7 @@ def add_game(game: GameAdd, db: Session = Depends(get_db), current_user = Depend
     new_game = crud_game.add_game(db, game, current_user.id)
     return new_game
 
-@game.delete('/{id}', response_model=GameBase)
+@game.delete('/id_game/{id}', response_model=GameBase)
 def delete_game(id: int, db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
     db_game = crud_game.get_game_by_id(db, id)
     if db_game is None:
@@ -40,7 +48,7 @@ def delete_game(id: int, db: Session = Depends(get_db), current_user = Depends(o
     del_game = crud_game.delete_game(db, id)
     return del_game
 
-@game.put('/{id}', response_model=GameBase)
+@game.put('/id_game/{id}', response_model=GameBase)
 def update_game(id: int, update_game: GameUpdate, db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
     db_game = crud_game.get_game_by_id(db, id)
     if db_game is None:

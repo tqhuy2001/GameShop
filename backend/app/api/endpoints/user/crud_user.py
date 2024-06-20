@@ -4,8 +4,8 @@ from app.api.endpoints.login import oauth2
 from app.models.user import User
 from app.schemas.user import UserCreate
 
-def get_all_users(db: Session, skip: int = 0, limit: int = 100):
-    db_users = db.query(User).offset(skip).limit(limit).all()
+def get_all_users(db: Session):
+    db_users = db.query(User).all()
     return db_users
 
 def get_user_by_id(db: Session, id: int):

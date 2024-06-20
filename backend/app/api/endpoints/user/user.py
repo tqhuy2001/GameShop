@@ -14,10 +14,10 @@ def get_all_users(db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Not found any users')
     return db_users
 
-@user.get('/{id}', response_model=UserBase)
+@user.get('/id_user/{id}', response_model=UserBase)
 def get_user_by_id(id: int, db: Session = Depends(get_db)):
     db_user = crud_user.get_user_by_id(db, id)
-    if db_user is False:
+    if db_user is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Not found user')
     return db_user
 
@@ -30,14 +30,14 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
     new_user = crud_user.create_user(db, user)
     return new_user
 
-@user.delete('/{id}', response_model=UserBase)
+@user.delete('/id_user/{id}', response_model=UserBase)
 def delete_user(id: int, db: Session = Depends(get_db)):
     db_user = crud_user.delete_user(db, id)
     if db_user is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Not found user')
     return db_user
 
-@user.patch('/', response_model=UserBase)
+@user.put('/id_user/{id}', response_model=UserBase)
 def update_cash_user(id: int, cash: int, db: Session = Depends(get_db), ):
     db_user = crud_user.update_cash(db, id, cash)
     if db_user is None:

@@ -3,12 +3,16 @@ from sqlalchemy.orm import Session
 from app.models.game import Game
 from app.schemas.game import GameUpdate, GameAdd
 
-def get_all_games(db: Session, skip: int = 0, limit: int = 100):
-    db_games = db.query(Game).offset(skip).limit(limit).all()
+def get_all_games(db: Session):
+    db_games = db.query(Game).all()
     return db_games
 
 def get_game_by_id(db: Session, id: int):
     db_game = db.query(Game).filter(Game.id == id).first()
+    return db_game
+
+def get_games(db: Session, search: str, limit: int):
+    db_game = db.query(Game).filter(Game.name.contains(search)).limit(limit).all()
     return db_game
 
 def get_game_by_name(db: Session, game_name: str):
