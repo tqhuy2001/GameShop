@@ -6,9 +6,15 @@ class GameBase(BaseModel):
     price: int
     description: str
     create_at: datetime
+    owner_id: int
 
     class Config:
         orm_mode = True
+
+class GameUpdate(BaseModel):
+    name: str
+    price: int
+    description: str
 
 class GameAdd(BaseModel):
     name: str

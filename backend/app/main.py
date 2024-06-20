@@ -13,7 +13,7 @@ game.Base.metadata.create_all(bind=engine)
 
 
 origins = [
-    'http://localhost:8009',
+    'http://localhost:8001',
 ]
 
 app.add_middleware(

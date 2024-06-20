@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Integer, TIMESTAMP
+from sqlalchemy import Column, String, Integer, TIMESTAMP, ForeignKey
 from sqlalchemy.sql.expression import text
 
 from app.core.database import Base
@@ -9,5 +9,7 @@ class Game(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(50), unique=True, nullable=False)
     price = Column(Integer, nullable=False)
-    description = Column(String(10000))
+    description = Column(String(10000),nullable=False, server_default='')
     create_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
+
+    owner_id = Column(Integer, ForeignKey(('users.id'), ondelete='CASCADE'), nullable=False)

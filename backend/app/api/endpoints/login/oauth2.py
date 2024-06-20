@@ -4,8 +4,11 @@ from jwt.exceptions import InvalidTokenError
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext
+from sqlalchemy.orm import Session
 
 from app.schemas import token as tk
+from app.core.dependencies import get_db
+from app.models import user
 
 
 pass_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
@@ -44,7 +47,11 @@ def verify_access_token(token: str, login_exception):
         raise login_exception
     return token_data
 
-def get_current_user(token: str = Depends(oauth2_scheme)):
+def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
     login_exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Could not validate login', headers={'WWW-Authenticate': 'Bearer'})
-    return verify_access_token(token, login_exception)
+
+    token = verify_access_token(token, login_exception)
+    db_user = db.query(user.User).filter(user.User.id == token.id).first()
+
+    return db_user
 
