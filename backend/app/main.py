@@ -1,20 +1,13 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.models import game
-from app.models import user
-from app.api.routers.api import router
+from app.api.routers.api import routers
 from app.core.database import engine
 
 app = FastAPI()
 
-user.Base.metadata.create_all(bind=engine)
-game.Base.metadata.create_all(bind=engine)
-
-print(1)
-
 origins = [
-    'http://localhost:8005',
+    '*',
 ]
 
 app.add_middleware(
@@ -25,4 +18,8 @@ app.add_middleware(
     allow_headers=['*'],
 )
 
-app.include_router(router)
+@app.get('/')
+def hello():
+    return {'msg': 'Hello'}
+
+app.include_router(routers)

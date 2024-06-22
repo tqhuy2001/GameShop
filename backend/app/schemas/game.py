@@ -14,12 +14,7 @@ class GameBase(BaseModel):
     class Config:
         from_attrbutes = True
 
-class GameUpdate(BaseModel):
-    name: str
-    price: int
-    description: str
-
-class GameAdd(BaseModel):
+class GameIn(BaseModel):
     name: str
     price: int
     description: str

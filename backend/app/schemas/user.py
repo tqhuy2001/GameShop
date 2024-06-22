@@ -16,18 +16,17 @@ class UserBase(BaseModel):
     class Config:
         from_attrbutes = True
 
-class UserLogin(BaseModel):
-    username: str
-    password: str
-
 class User(BaseModel):
     id: int
     username: str
     email: str
     password: str
     cash: int
+    create_at: datetime
 
-class UserLogin(BaseModel):
-    username: str
-    password: str
+class GameBought(BaseModel):
+    game_bought: int
+
+    class Config:
+        from_attrbutes = True
 
