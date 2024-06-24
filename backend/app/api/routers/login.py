@@ -6,6 +6,6 @@ login_router = APIRouter()
 
 login_router.include_router(
     login,
-    tags=['login'],
+    tags=['Login'],
     responses={404: {"description": "Not found"}},
 )

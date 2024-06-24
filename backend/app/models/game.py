@@ -14,6 +14,6 @@ class Game(Base):
     description = Column(String(10000),nullable=False, server_default='')
     create_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
 
-    owner_id = Column(Integer, ForeignKey(('users.id'), ondelete='CASCADE'), nullable=False)
+    user_created_id = Column(Integer, ForeignKey(('users.id'), ondelete='CASCADE'), nullable=False)
 
-    owner = relationship('User')
+    user_created = relationship('User')

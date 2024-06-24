@@ -1,7 +1,22 @@
 from pydantic import BaseModel
 
-from pydantic.types import conint
-
 class Buying(BaseModel):
+    id: int
+    user_id: int
     game_id: int
-    dir: conint(le=1)
+
+    class Config:
+        from_attributes: True
+
+class BuyingDeleted(BaseModel):
+    user_id: int
+    game_id: int
+
+    class Config:
+        from_attributes: True
+
+class CustomerBought(BaseModel):
+    game_id: int
+
+    class Config:
+        from_attributes: True

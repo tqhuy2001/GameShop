@@ -2,19 +2,33 @@ from datetime import datetime
 
 from pydantic import BaseModel
 
-class UserCreate(BaseModel):
+class CustomerCreate(BaseModel):
     username: str
     email: str
     password: str
+    permission: str = 'Customer'
+
+class StaffCreate(BaseModel):
+    username: str
+    email: str
+    password: str
+    permission: str = 'Staff'
+
+class AdminCreate(BaseModel):
+    username: str
+    email: str
+    password: str
+    permission: str = 'Admin'
 
 class UserBase(BaseModel):
     username: str
     email: str
     cash: int
     create_at: datetime
+    permission: str
 
     class Config:
-        from_attrbutes = True
+        from_attributes = True
 
 class User(BaseModel):
     id: int
@@ -24,9 +38,10 @@ class User(BaseModel):
     cash: int
     create_at: datetime
 
-class GameBought(BaseModel):
-    game_bought: int
+class UserInfo(BaseModel):
+    username: str
+    email: str
+    cash: int
 
     class Config:
-        from_attrbutes = True
-
+        from_attributes = True

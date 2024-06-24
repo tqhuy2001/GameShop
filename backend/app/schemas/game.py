@@ -8,11 +8,10 @@ class GameBase(BaseModel):
     price: int
     description: str
     create_at: datetime
-    owner_id: int
-    owner: UserBase
+    user_created_id: int
 
     class Config:
-        from_attrbutes = True
+        from_attributes = True
 
 class GameIn(BaseModel):
     name: str

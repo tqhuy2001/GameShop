@@ -7,6 +7,6 @@ buying_router = APIRouter()
 buying_router.include_router(
     buying,
     prefix="/buying",
-    tags=["buying"],
+    tags=["Buyings"],
     responses={404: {"description": "Not found"}},
 )

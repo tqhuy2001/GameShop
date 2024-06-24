@@ -1,18 +1,18 @@
 """Initiate tables
 
-Revision ID: ca3c9ed5c4e0
+Revision ID: 71e96678a12e
 Revises: 
-Create Date: 2024-06-22 14:37:07.174237
+Create Date: 2024-06-24 14:52:54.834873
 
 """
 from typing import Sequence, Union
 
 from alembic import op
 import sqlalchemy as sa
-
+from sqlalchemy.dialects import mysql
 
 # revision identifiers, used by Alembic.
-revision: str = 'ca3c9ed5c4e0'
+revision: str = '71e96678a12e'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -27,6 +27,8 @@ def upgrade() -> None:
     sa.Column('password', sa.String(length=500), nullable=False),
     sa.Column('cash', sa.Integer(), server_default=sa.text('0'), nullable=False),
     sa.Column('create_at', sa.TIMESTAMP(timezone=True), server_default=sa.text('now()'), nullable=False),
+    sa.Column('permission', sa.String(length=50), server_default=sa.text("'Customer'"), nullable=False),
+    sa.Column('avatar', mysql.LONGTEXT(), nullable=True),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('username')
@@ -37,18 +39,18 @@ def upgrade() -> None:
     sa.Column('price', sa.Integer(), nullable=False),
     sa.Column('description', sa.String(length=10000), server_default='', nullable=False),
     sa.Column('create_at', sa.TIMESTAMP(timezone=True), server_default=sa.text('now()'), nullable=False),
-    sa.Column('owner_id', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['owner_id'], ['users.id'], ondelete='CASCADE'),
+    sa.Column('user_created_id', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['user_created_id'], ['users.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('name')
     )
     op.create_table('buying',
+    sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('game_id', sa.Integer(), nullable=False),
-    sa.Column('phone', sa.String(length=50), nullable=False),
     sa.ForeignKeyConstraint(['game_id'], ['games.id'], ondelete='CASCADE'),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
-    sa.PrimaryKeyConstraint('user_id', 'game_id')
+    sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###
 

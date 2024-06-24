@@ -7,6 +7,6 @@ user_router = APIRouter()
 user_router.include_router(
     user,
     prefix="/user",
-    tags=["users"],
+    tags=["User"],
     responses={404: {"description": "Not found"}},
 )

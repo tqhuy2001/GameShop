@@ -1,4 +1,5 @@
-from sqlalchemy import Column, String, Integer, TIMESTAMP
+from sqlalchemy import Column, String, Integer, TIMESTAMP, BLOB
+from sqlalchemy.dialects.mysql import LONGTEXT
 from sqlalchemy.sql.expression import text
 
 from ..core.database import Base
@@ -12,3 +13,5 @@ class User(Base):
     password = Column(String(500), nullable=False)
     cash = Column(Integer, nullable=False, server_default=text('0'))
     create_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
+    permission = Column(String(50), nullable=False, server_default=text('\'Customer\''))
+    avatar = Column(LONGTEXT)

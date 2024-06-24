@@ -7,7 +7,7 @@ from app.core.database import engine
 app = FastAPI()
 
 origins = [
-    '*',
+    'localhost:8001',
 ]
 
 app.add_middleware(
