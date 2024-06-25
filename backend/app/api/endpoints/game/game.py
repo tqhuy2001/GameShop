@@ -16,7 +16,7 @@ def get_all_games(db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Not found any games')
     return db_games
 
-@game.get('/id_game/{id}', response_model=game_schemas.GameBase)
+@game.get('/game_id/{id}', response_model=game_schemas.GameBase)
 def get_game_by_id(id: int, db: Session = Depends(get_db)):
     db_game = db.query(game_models.Game).filter(game_models.Game.id == id).first()
     if db_game is None:
@@ -24,7 +24,7 @@ def get_game_by_id(id: int, db: Session = Depends(get_db)):
     return db_game
 
 @game.get('/search', response_model=list[game_schemas.GameBase])
-def search_games(search: Optional[str] = '', limit: int = 100, db: Session = Depends(get_db)):
+def search_games_by_name(search: Optional[str] = '', limit: int = 100, db: Session = Depends(get_db)):
     db_game = db.query(game_models.Game).filter(game_models.Game.name.contains(search)).limit(limit).all()
     if len(db_game) == 0:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Not found game')
@@ -43,7 +43,7 @@ def add_game(game: game_schemas.GameIn, db: Session = Depends(get_db), current_u
     db.refresh(new_game)
     return {'msg': 'Successfully created game'}
 
-@game.delete('/id_game/{id}', status_code=status.HTTP_200_OK)
+@game.delete('/game_id/{id}', status_code=status.HTTP_200_OK)
 def delete_game(id: int, db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
     if current_user.permission != 'Admin':
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='You are not permitted')
@@ -54,7 +54,7 @@ def delete_game(id: int, db: Session = Depends(get_db), current_user = Depends(o
     db.commit()
     return {'msg': 'Successfully deleted game'}
 
-@game.put('/id_game/{id}', status_code=status.HTTP_200_OK)
+@game.put('/game_id/{id}', status_code=status.HTTP_200_OK)
 def update_game(id: int, update_game: game_schemas.GameIn, db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
     if current_user.permission != 'Admin' and current_user.permission != 'Staff':
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='You are not permitted')

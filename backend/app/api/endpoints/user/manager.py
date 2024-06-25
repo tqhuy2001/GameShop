@@ -4,8 +4,6 @@ from sqlalchemy.orm import Session
 from app.core.dependencies import get_db
 from app.schemas import user as user_schemas
 from app.models import user as user_models
-from app.models import buying as buying_models
-from app.schemas import buying as buying_schemas
 from app.api.endpoints.login import oauth2
 
 manager = APIRouter()
@@ -50,18 +48,6 @@ def delete_user(id: int, db: Session = Depends(get_db), current_user = Depends(o
     db.commit()
     return {'msg': 'Successfully deleted user'}
 
-@manager.put('/id_user/{id}', status_code=status.HTTP_200_OK)
-def update_cash_customer(id: int, cash: int, db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
-    if current_user.permission != 'Admin' and current_user.permission != 'Staff':
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='You are not permitted')
-    db_user = db.query(user_models.User).filter(user_models.User.id == id).first()
-    if db_user is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Not found user')
-    db_user.cash = cash
-    db.commit()
-    db.refresh(db_user)
-    return {'msg': 'Successfully updated user\'s cash'}
-
 @manager.get('/users', response_model=list[user_schemas.UserBase])
 def get_all_users(db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
     if current_user.permission != 'Admin' and current_user.permission != 'Staff':
@@ -79,13 +65,3 @@ def get_user_by_id(id: int, db: Session = Depends(get_db), current_user = Depend
     if db_user is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Not found user')
     return db_user
-
-@manager.get('/buyings', response_model=list[buying_schemas.Buying])
-def get_all_buyings(db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
-    if current_user.permission != 'Admin' and current_user.permission != 'Staff':
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='You are not permitted')
-    db_games = db.query(user_models.User.id, buying_models.Buying.game_id).join(
-        buying_models.Buying, buying_models.Buying.user_id == user_models.User.id, isouter=False).all()
-    if db_games is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Not found any game buyings')
-    return db_games

@@ -2,12 +2,11 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.routers.api import routers
-from app.core.database import engine
 
 app = FastAPI()
 
 origins = [
-    'localhost:8001',
+    'http://localhost:3000',
 ]
 
 app.add_middleware(
@@ -17,9 +16,5 @@ app.add_middleware(
     allow_methods=['*'],
     allow_headers=['*'],
 )
-
-@app.get('/')
-def hello():
-    return {'msg': 'Hello'}
 
 app.include_router(routers)

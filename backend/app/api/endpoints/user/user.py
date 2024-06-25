@@ -14,7 +14,7 @@ user = APIRouter()
 def get_info_user(current_user = Depends(oauth2.get_current_user)):
     return current_user
 
-@user.post('/user', status_code=status.HTTP_200_OK)
+@user.post('/upload_avatar', status_code=status.HTTP_200_OK)
 async def upload_avatar(db: Session = Depends(get_db), file: UploadFile = File(...), current_user = Depends(oauth2.get_current_user)):
     contents = await file.read()
     db_user = db.query(user_models.User).filter(user_models.User.id == current_user.id).first()
@@ -23,9 +23,9 @@ async def upload_avatar(db: Session = Depends(get_db), file: UploadFile = File(.
     db.commit()
     return {'msg': 'Successfully updated avatar'}
 
-@user.get('/user')
+@user.get('/get_avatar')
 async def get_avatar(current_user = Depends(oauth2.get_current_user)):
     if current_user.avatar is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='User has not upload avatar')
-    binary_data = base64.b64decode(current_user.avatar)
+    binary_data = current_user.avatar
     return {'msg': f'{binary_data}'}
