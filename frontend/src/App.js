@@ -1,26 +1,18 @@
-import { useEffect, useState } from "react";
-
-const url = 'http://localhost:8003/'
-const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZXhwIjoxNzE5MjQ5MTQ4fQ.tnwgzLbcKtfFsS6Js5VK_AOZ7gkLpUNXqPrNtym4SlQ'
+import { Home, Login, Public, SignUp } from './containers/public/'
+import { Routes, Route } from "react-router-dom";
+import path from "./utils/path";
 
 function App() {
-  const [data, setData] = useState([])
-  const fetchData = {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application.json',
-      'Authorization': 'Bearer ' + token,
-    },
-  }
-  useEffect(() => {
-    fetch(url + 'user/get_avatar', fetchData)
-    .then(res => res.json())
-    .then(data => setData(data))
-  }, [])
-  const src1 = 'data:image/jpeg;base64,' + data.msg
+
   return (
-    <div className="text-red-500 underline">
-      <img src={src1} className="h-[100px] w-[150px]"></img>
+    <div className=''>
+      <Routes>
+        <Route path={path.public} element={<Public />}>
+          <Route path={path.home} element={<Home />} />
+          <Route path={path.log_in} element={<Login />} />
+          <Route path={path.sign_up} element={<SignUp />} />
+        </Route>
+      </Routes>
     </div>
   );
 }
