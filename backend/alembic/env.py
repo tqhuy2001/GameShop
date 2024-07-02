@@ -8,6 +8,7 @@ from alembic import context
 from app.models import buying as buying_models
 from app.models import user as user_models
 from app.models import game as game_models
+from app.models import game_images as game_images_models
 
 from app.config import settings
 
@@ -32,7 +33,11 @@ def combine_metadata(*args):
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 target_metadata = combine_metadata(
-    user_models.Base.metadata, game_models.Base.metadata, buying_models.Base.metadata)
+    user_models.Base.metadata,
+    game_models.Base.metadata,
+    buying_models.Base.metadata,
+    game_images_models.Base.metadata
+)
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:

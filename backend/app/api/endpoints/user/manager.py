@@ -3,12 +3,15 @@ from sqlalchemy.orm import Session
 
 from app.core.dependencies import get_db
 from app.schemas import user as user_schemas
+from app.schemas import buying as buying_schemas
 from app.models import user as user_models
+from app.models import buying as buying_models
 from app.api.endpoints.login import oauth2
+from app.config import settings
 
 manager = APIRouter()
 
-@manager.post('/staff', status_code=status.HTTP_201_CREATED)
+@manager.post('/add-staff', status_code=status.HTTP_201_CREATED)
 def create_staff(staff: user_schemas.StaffCreate, db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
     if current_user.permission != 'Admin':
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='You are not permitted')
@@ -20,25 +23,25 @@ def create_staff(staff: user_schemas.StaffCreate, db: Session = Depends(get_db),
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail='Email already exists')
     hashed_pwd = oauth2.hash(staff.password)
     staff.password = hashed_pwd
-    new_user = user_models.User(**staff.dict())
+    new_user = user_models.User(**staff.dict(), permission='Staff')
     db.add(new_user)
     db.commit()
     return {'msg': 'Successfully created staff user'}
 
-@manager.post('/admin', status_code=status.HTTP_201_CREATED)
+@manager.post('/add-admin', status_code=status.HTTP_201_CREATED)
 def create_admin(admin: user_schemas.AdminCreate, db: Session = Depends(get_db)):
-    db_user = db.query(user_models.User).all()
-    if len(db_user) != 0:
+    db_user = db.query(user_models.User).filter(user_models.User.permission == 'Admin').first()
+    if db_user:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail='Admin user has already existed')
     hashed_pwd = oauth2.hash(admin.password)
     admin.password = hashed_pwd
-    new_user = user_models.User(**admin.dict())
+    new_user = user_models.User(**admin.dict(), permission='Admin')
     db.add(new_user)
     db.commit()
     return {'msg': 'Successfully created admin user'}
 
-@manager.delete('/id_user/{id}', status_code=status.HTTP_200_OK)
-def delete_user(id: int, db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
+@manager.delete('/delete-user/{user_id}', status_code=status.HTTP_200_OK)
+def delete_user(user_id: int, db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
     if current_user.permission != 'Admin':
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='You are not permitted')
     db_user = db.query(user_models.User).filter(user_models.User.id == id).first()
@@ -48,7 +51,7 @@ def delete_user(id: int, db: Session = Depends(get_db), current_user = Depends(o
     db.commit()
     return {'msg': 'Successfully deleted user'}
 
-@manager.get('/users', response_model=list[user_schemas.UserBase])
+@manager.get('/get-all-users', response_model=list[user_schemas.UserBase])
 def get_all_users(db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
     if current_user.permission != 'Admin' and current_user.permission != 'Staff':
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='You are not permitted')
@@ -57,11 +60,31 @@ def get_all_users(db: Session = Depends(get_db), current_user = Depends(oauth2.g
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Not found any users')
     return db_users
 
-@manager.get('/id_user/{id}', response_model=user_schemas.UserBase)
-def get_user_by_id(id: int, db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
+@manager.get('/get-user/{user_id}', response_model=user_schemas.UserBase)
+def get_user_by_id(user_id: int, db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
     if current_user.permission != 'Admin' and current_user.permission != 'Staff':
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='You are not permitted')
-    db_user = db.query(user_models.User).filter(user_models.User.id == id).first()
+    db_user = db.query(user_models.User).filter(user_models.User.id == user_id).first()
     if db_user is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Not found user')
     return db_user
+
+@manager.delete('/delete/{buying_id}', status_code=status.HTTP_200_OK)
+def delete_buying(buying_id: int, db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
+    db_buying = db.query(buying_models.Buying).filter(buying_models.Buying.id == buying_id).first()
+    if current_user.permission != 'Admin':
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='Only admin can delete buying')
+    if not db_buying:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Buying does not exist')
+    db.delete(db_buying)
+    db.commit()
+    return {'msg': 'Successfully deleted buying'}
+
+@manager.get('/get-all-buyings', response_model=list[buying_schemas.Buying])
+def get_all_buyings(db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
+    if current_user.permission != 'Admin' and current_user.permission != 'Staff':
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='You are not permitted')
+    db_games = db.query(buying_models.Buying).all()
+    if len(db_games) == 0:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Not found any buyings')
+    return db_games

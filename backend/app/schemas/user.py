@@ -6,19 +6,16 @@ class CustomerCreate(BaseModel):
     username: str
     email: str
     password: str
-    permission: str = 'Customer'
 
 class StaffCreate(BaseModel):
     username: str
     email: str
     password: str
-    permission: str = 'Staff'
 
 class AdminCreate(BaseModel):
     username: str
     email: str
     password: str
-    permission: str = 'Admin'
 
 class UserBase(BaseModel):
     username: str

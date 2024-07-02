@@ -23,6 +23,7 @@ class Game(BaseModel):
     description: str
     create_at: datetime
     user_created_id: int
+    main_image: str
 
     class Config:
         from_attributes = True
