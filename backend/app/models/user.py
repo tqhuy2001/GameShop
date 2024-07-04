@@ -13,5 +13,5 @@ class User(Base):
     password = Column(String(500), nullable=False)
     cash = Column(Integer, nullable=False, server_default=text('0'))
     create_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
-    permission = Column(String(50), nullable=False, server_default=text('\'Customer\''))
-    avatar = Column(String(1000), nullable=False, server_default=text(f'\'{settings.default_avatar_path}\''))
+    permission = Column(String(50), nullable=False)
+    avatar = Column(String(1000), nullable=False)

@@ -14,7 +14,7 @@ const ListGames = () => {
           <div key={index} className='rounded-lg bg-white w-full h-[350px]'>
   
                 <img className='rounded-lg w-full h-full' src={`${process.env.REACT_APP_GET_IMAGE}${item.main_image}`}/>
-                <div className='relative bottom-[20px]'>asdfasdfas</div>
+                <div className='relative bottom-[20px]'>{item.name}</div>
           </div>
           ))}
         </div>

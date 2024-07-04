@@ -22,7 +22,7 @@ def create_customer(user: user_schemas.CustomerCreate, db: Session = Depends(get
         raise HTTPException(status_code=status.HTTP_201_CREATED_NOT_FOUND, detail='Email has already existed')
     hashed_pwd = oauth2.hash(user.password)
     user.password = hashed_pwd
-    new_user = user_models.User(**user.dict(), permission='Customer')
+    new_user = user_models.User(**user.dict(), permission='Customer', avatar=settings.default_avatar_path)
     db.add(new_user)
     db.commit()
     return {'msg': 'Successfully created account'}

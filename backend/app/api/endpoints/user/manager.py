@@ -23,7 +23,7 @@ def create_staff(staff: user_schemas.StaffCreate, db: Session = Depends(get_db),
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail='Email already exists')
     hashed_pwd = oauth2.hash(staff.password)
     staff.password = hashed_pwd
-    new_user = user_models.User(**staff.dict(), permission='Staff')
+    new_user = user_models.User(**staff.dict(), permission='Staff', avatar=settings.default_avatar_path)
     db.add(new_user)
     db.commit()
     return {'msg': 'Successfully created staff user'}
@@ -35,7 +35,7 @@ def create_admin(admin: user_schemas.AdminCreate, db: Session = Depends(get_db))
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail='Admin user has already existed')
     hashed_pwd = oauth2.hash(admin.password)
     admin.password = hashed_pwd
-    new_user = user_models.User(**admin.dict(), permission='Admin')
+    new_user = user_models.User(**admin.dict(), permission='Admin', avatar=settings.default_avatar_path)
     db.add(new_user)
     db.commit()
     return {'msg': 'Successfully created admin user'}
