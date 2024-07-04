@@ -11,10 +11,8 @@ from app.api.endpoints.login import oauth2
 from app.models import game as game_models
 from app.models import game_images as game_images_models
 from app.config import settings
-from sqlalchemy import and_
 
 game = APIRouter()
-
 
 @game.get('/get-all-games', response_model=list[game_schemas.Game])
 def get_all_games(db: Session = Depends(get_db)):

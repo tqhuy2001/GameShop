@@ -17,7 +17,7 @@ const igLink = 'https://www.instagram.com/huy.tq307/'
 const SideBarLeft = () => {
 
   return (
-    <div className='fixed border-r-[1px] border-gray-400 text-slate-300 bg-gray-500 flex flex-col w-[290px] h-screen justify-between'>
+    <div className='fixed top-[70px] border-r-[1px] border-gray-400 text-slate-300 bg-gray-500 flex flex-col w-[275px] h-screen justify-between'>
         <div className='mt-[8px] flex flex-col'>
             {menuSideBarLeft.map((item, index) => (
                 <NavLink

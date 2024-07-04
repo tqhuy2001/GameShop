@@ -9,12 +9,12 @@ const buttonHoverStyle = 'hover:bg-slate-300 hover:text-gray-950'
 const Navbar = () => {
   return (
     <div className='h-[70px] flex bg-gray-950 px-[100px] fixed w-screen'>
-      <div className='w-1/4 flex justify-center'>
-        <a className='ml-[50px] flex my-1 w-[180px] items-center' href='/'>
-            <img className='w-[90px] h-[80px] mt-[5px]' src={logoPath} alt='logo' />
+      <div className='w-1/4 flex pl-[50px]'>
+        <a className='flex w-[140px] justify-center items-center' href='/'>
+            <img className='w-[100px] h-[60px]' src={logoPath} alt='logo' />
         </a>
       </div>
-      <div className='w-1/2 flex justify-center items-center'>
+      <div className='w-1/2 flex pl-[130px] items-center'>
         <Search />
       </div>
       <div className='w-1/4 flex items-center justify-center'>
