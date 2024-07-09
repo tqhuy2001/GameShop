@@ -3,7 +3,8 @@ from fastapi import File, UploadFile
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from typing import Optional, Annotated
-import os, base64
+import os
+import base64
 
 from app.core.dependencies import get_db
 from app.schemas import game as game_schemas

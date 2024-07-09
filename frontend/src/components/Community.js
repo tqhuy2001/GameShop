@@ -9,7 +9,7 @@ const Community = () => {
     window.addEventListener("resize", updateSize)
   })
   return (
-    <div className={`flex flex-col items-center rounded-lg border border-white w-[350px] h-[810px] ${widthwindow > 1340 ? 'block' : 'hidden'}`}>
+    <div className={`flex flex-col items-center rounded-lg border border-gray-500 w-[350px] h-[810px] ${widthwindow > 1400 ? 'block' : 'hidden'}`}>
       Community
     </div>
   )

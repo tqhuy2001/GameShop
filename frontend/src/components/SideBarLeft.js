@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom'
 import icons from '../utils/icons'
 
 const notActiveStyle = 'flex py-[13px] pl-[35px] items-center text-lg tracking-wide hover:text-yellow-600'
-const activeStyle = 'bg-gray-300 text-yellow-600 flex py-[13px] pl-[35px] items-center text-lg tracking-wide'
+const activeStyle = 'bg-zinc-800 text-yellow-600 flex py-[13px] pl-[35px] items-center text-lg tracking-wide'
 
 const FaFacebookF = icons.FaFacebookF
 const FaYoutube = icons.FaYoutube
@@ -17,7 +17,7 @@ const igLink = 'https://www.instagram.com/huy.tq307/'
 const SideBarLeft = () => {
 
   return (
-    <div className='fixed top-[70px] border-r-[1px] border-gray-400 text-slate-300 bg-gray-500 flex flex-col w-[275px] h-screen justify-between'>
+    <div className='fixed top-[70px] border-r-[1px] border-gray-500 text-slate-300 flex flex-col w-[275px] h-screen justify-between'>
         <div className='mt-[8px] flex flex-col'>
             {menuSideBarLeft.map((item, index) => (
                 <NavLink

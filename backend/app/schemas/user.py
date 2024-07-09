@@ -39,6 +39,7 @@ class UserInfo(BaseModel):
     username: str
     email: str
     cash: int
+    avatar: str
 
     class Config:
         from_attributes = True

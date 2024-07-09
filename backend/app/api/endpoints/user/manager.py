@@ -1,5 +1,6 @@
 from fastapi import APIRouter, HTTPException, Depends, status
 from sqlalchemy.orm import Session
+import base64
 
 from app.core.dependencies import get_db
 from app.schemas import user as user_schemas
@@ -23,7 +24,9 @@ def create_staff(staff: user_schemas.StaffCreate, db: Session = Depends(get_db),
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail='Email already exists')
     hashed_pwd = oauth2.hash(staff.password)
     staff.password = hashed_pwd
-    new_user = user_models.User(**staff.dict(), permission='Staff', avatar=settings.default_avatar_path)
+    t = settings.default_avatar_path
+    db_avt = base64.b64encode(t.encode())
+    new_user = user_models.User(**staff.dict(), permission='Staff', avatar=db_avt)
     db.add(new_user)
     db.commit()
     return {'msg': 'Successfully created staff user'}
@@ -35,7 +38,9 @@ def create_admin(admin: user_schemas.AdminCreate, db: Session = Depends(get_db))
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail='Admin user has already existed')
     hashed_pwd = oauth2.hash(admin.password)
     admin.password = hashed_pwd
-    new_user = user_models.User(**admin.dict(), permission='Admin', avatar=settings.default_avatar_path)
+    t = settings.default_avatar_path
+    db_avt = base64.b64encode(t.encode())
+    new_user = user_models.User(**admin.dict(), permission='Admin', avatar=db_avt)
     db.add(new_user)
     db.commit()
     return {'msg': 'Successfully created admin user'}

@@ -6,7 +6,7 @@ from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
-from app.schemas import token as tk
+from app.schemas import token as token_schemas
 from app.core.dependencies import get_db
 from app.models import user
 from app.config import settings
@@ -43,7 +43,7 @@ def verify_access_token(token: str, login_exception):
 
         if id is None:
             raise login_exception
-        token_data = tk.TokenData(id=id)
+        token_data = token_schemas.TokenData(id=id)
     except InvalidTokenError:
         raise login_exception
     return token_data
