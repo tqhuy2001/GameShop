@@ -5,7 +5,7 @@ const CiSearch = icons.CiSearch
 
 const Search = () => {
   return (
-    <div className='h-[40px] w-[550px] flex items-center'>
+    <div className='h-[38px] w-[550px] flex items-center'>
         <span className='absolute ml-[8px] flex items-center justify-center text-slate-700'>
             <CiSearch size={24}/>
         </span>

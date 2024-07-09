@@ -3,7 +3,7 @@ from fastapi import File, UploadFile
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from typing import Optional, Annotated
-import os
+import os, base64
 
 from app.core.dependencies import get_db
 from app.schemas import game as game_schemas
@@ -45,7 +45,7 @@ def add_game(game: game_schemas.GameIn, db: Session = Depends(get_db), current_u
     db_game = db.query(game_models.Game).filter(game_models.Game.name == game.name).first()
     if db_game:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail='Game already exists')
-    new_game = game_models.Game(**game.dict(), user_created_id=current_user.id)
+    new_game = game_models.Game(**game.dict(), user_created_name=current_user.username)
     db.add(new_game)
     db.commit()
     db.refresh(new_game)
@@ -77,9 +77,10 @@ async def update_main_image(game_id: int, main_image: Annotated[UploadFile, File
     except Exception as e:
         return {'msg': e.args}
     db_main_image = parent_dir.replace('\\\\', '/')
-    db_game.main_image = db_main_image + main_image_name
+    t = db_main_image + main_image_name
+    db_game.main_image = base64.b64encode(t.encode())
     db.commit()
-    return {'msg': 'Successfully add main image'}
+    return {'msg': 'OK'}
 
 
 @game.post('/add-images/{game_id}', status_code=status.HTTP_200_OK)
@@ -117,7 +118,8 @@ async def add_images(game_id: int, images: list[UploadFile] = File(...), db: Ses
         except Exception as e:
             return {'msg': e.args}
         db_image = file_path.replace('\\\\', '/')
-        new_image = game_images_models.GameImages(game_id=game_id, image=db_image)
+        t = db_image
+        new_image = game_images_models.GameImages(game_id=game_id, image=base64.b64encode(t.encode()))
         db.add(new_image)
         db.commit()
         i += 1

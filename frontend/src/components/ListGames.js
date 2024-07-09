@@ -1,5 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+import { GameCard } from './GameCard'
 
 const ListGames = () => {
 
@@ -8,13 +9,10 @@ const ListGames = () => {
 
   return (
     <div className=''>
-      ListGames
-      <div className='grid grid-cols-4 gap-3 my-[10px]'>
-        {data.map((item, index) => (
-          <div key={index} className='rounded-lg bg-white w-full h-[350px]'>
-  
-                <img className='rounded-lg w-full h-full' src={`${process.env.REACT_APP_GET_IMAGE}${item.main_image}`}/>
-                <div className='relative bottom-[20px]'>{item.name}</div>
+      <div className='grid grid-cols-4 gap-2 py-[10px]'>
+        {data.map((item) => (
+          <div key={item.id}>
+            <GameCard data={item}/>
           </div>
           ))}
         </div>

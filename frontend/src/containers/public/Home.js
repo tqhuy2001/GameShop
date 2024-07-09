@@ -1,22 +1,13 @@
-import React, { useEffect } from 'react'
-import ListGames from '../../components/ListGames'
-import * as actions from '../../stores/actions'
-import { useDispatch } from 'react-redux'
+import React from 'react'
 import Banner from '../../components/Banner'
+import { NewUpdateGames } from '../../components'
 
 const Home = () => {
 
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(actions.getAllGames())
-  }, [])
-
   return (
     <div className='w-full'>
-      home
       <Banner />
-      <ListGames />
+      <NewUpdateGames />
     </div>
   )
 }

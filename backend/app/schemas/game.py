@@ -6,7 +6,7 @@ class GameBase(BaseModel):
     price: int
     description: str
     create_at: datetime
-    user_created_id: int
+    user_created_name: str
 
     class Config:
         from_attributes = True
@@ -22,7 +22,7 @@ class Game(BaseModel):
     price: int
     description: str
     create_at: datetime
-    user_created_id: int
+    user_created_name: str
     main_image: str
 
     class Config:

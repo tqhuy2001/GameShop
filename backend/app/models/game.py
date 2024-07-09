@@ -12,7 +12,7 @@ class Game(Base):
     price = Column(Integer, nullable=False)
     description = Column(String(10000),nullable=False, server_default='')
     create_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
-    user_created_id = Column(Integer, ForeignKey(('users.id'), ondelete='CASCADE'), nullable=False)
-    main_image = Column(String(1000), nullable=False, server_default='')
+    user_created_name = Column(String(50), ForeignKey(('users.username'), ondelete='NO ACTION'), nullable=False)
+    main_image = Column(String(100), nullable=False, server_default='')
 
     user_created = relationship('User')

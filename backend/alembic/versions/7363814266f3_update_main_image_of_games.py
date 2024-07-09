@@ -1,8 +1,8 @@
-"""Initate Tables
+"""update main image of games
 
-Revision ID: 4ed41d4d8d6b
+Revision ID: 7363814266f3
 Revises: 
-Create Date: 2024-07-04 21:34:53.940048
+Create Date: 2024-07-09 12:23:47.112366
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '4ed41d4d8d6b'
+revision: str = '7363814266f3'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -39,9 +39,9 @@ def upgrade() -> None:
     sa.Column('price', sa.Integer(), nullable=False),
     sa.Column('description', sa.String(length=10000), server_default='', nullable=False),
     sa.Column('create_at', sa.TIMESTAMP(timezone=True), server_default=sa.text('now()'), nullable=False),
-    sa.Column('user_created_id', sa.Integer(), nullable=False),
-    sa.Column('main_image', sa.String(length=1000), server_default='', nullable=False),
-    sa.ForeignKeyConstraint(['user_created_id'], ['users.id'], ondelete='CASCADE'),
+    sa.Column('user_created_name', sa.String(length=50), nullable=False),
+    sa.Column('main_image', sa.String(length=100), server_default='', nullable=False),
+    sa.ForeignKeyConstraint(['user_created_name'], ['users.username'], ondelete='NO ACTION'),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('name')
     )
