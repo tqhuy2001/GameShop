@@ -50,7 +50,7 @@ def add_game(game: game_schemas.GameIn, db: Session = Depends(get_db), current_u
     db.add(new_game)
     db.commit()
     db.refresh(new_game)
-    return {'msg': 'Successfully created game'}
+    return {'detail': 'Successfully created game'}
 
 
 @game.patch('/update-main-image/{game_id}', status_code=status.HTTP_200_OK)
@@ -81,7 +81,7 @@ async def update_main_image(game_id: int, main_image: Annotated[UploadFile, File
     t = db_main_image + main_image_name
     db_game.main_image = base64.b64encode(t.encode())
     db.commit()
-    return {'msg': 'OK'}
+    return {'detail': 'OK'}
 
 
 @game.post('/add-images/{game_id}', status_code=status.HTTP_200_OK)
@@ -125,7 +125,7 @@ async def add_images(game_id: int, images: list[UploadFile] = File(...), db: Ses
         db.commit()
         i += 1
 
-    return {'msg': 'Successfully add images to game'}
+    return {'detail': 'Successfully add images to game'}
 
 @game.delete('/delete/{game_id}', status_code=status.HTTP_200_OK)
 def delete_game(game_id: int, db: Session = Depends(get_db), current_user=Depends(oauth2.get_current_user)):
@@ -136,7 +136,7 @@ def delete_game(game_id: int, db: Session = Depends(get_db), current_user=Depend
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Not found game')
     db.delete(db_game)
     db.commit()
-    return {'msg': 'Successfully deleted game'}
+    return {'detail': 'Successfully deleted game'}
 
 
 @game.put('/update-game/{game_id}', status_code=status.HTTP_200_OK)
@@ -152,4 +152,4 @@ def update_game(game_id: int, update_game: game_schemas.GameIn, db: Session = De
     db_game.description = update_game.description
     db.commit()
     db.refresh(db_game)
-    return {'msg': 'Successfully updated game'}
+    return {'detail': 'Successfully updated game'}

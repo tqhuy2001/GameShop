@@ -11,7 +11,7 @@ const SearchGame = () => {
         dispatch(actions.getAllGames())
     }, [])
   return (
-    <div className='w-full'>
+    <div className='mt-[25px] w-full'>
         <ListGames />
     </div>
   )

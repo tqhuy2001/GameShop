@@ -8,14 +8,12 @@ const Public = () => {
   return (
     <div className='flex flex-col'>
         <Navbar />
-        <div className='mt-[70px]'>
-          <div className='flex h-min-screen bg-zinc-950'>
-              <SideBarLeft />
-              <div className='flex ml-[300px] mt-[15px] mr-[25px] w-full justify-center'>
-                <Outlet />
-              </div>
-              <Community />
-          </div>
+        <div className='flex min-h-screen bg-zinc-950 mt-[70px]'>
+            <SideBarLeft />
+            <div className='flex ml-[300px] mr-[25px] w-full justify-center'>
+              <Outlet />
+            </div>
+            <Community />
         </div>
     </div>
   )

@@ -1,0 +1,9 @@
+.bg_hover{
+    background: linear-gradient(rgb(39, 39, 42), rgb(39, 39, 42)) no-repeat;
+    background-position: center;
+    background-size:0% 54px;
+    transition: background-size 0.15s ease-out;
+}
+.bg_hover:hover {
+    background-size:100% 54px;
+}

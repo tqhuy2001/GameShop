@@ -32,4 +32,4 @@ async def upload_avatar(db: Session = Depends(get_db), file: UploadFile = File(.
     db_avt = base64.b64encode(t.encode())
     db_user.avatar = db_avt
     db.commit()
-    return {'msg': 'Successfully updated avatar'}
+    return {'detail': 'Successfully updated avatar'}

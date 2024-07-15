@@ -4,8 +4,9 @@ import { useEffect, useState } from 'react'
 import { GameCard } from './GameCard'
 
 const ListGames = () => {
-  const listGames = useSelector(state => state.app)
-  const data = listGames.games
+  const state = useSelector(state => state.app)
+  const data = state.games.allGames.data
+  const error = state.games.allGames.error
 
   const [widthwindow, setWidthWindow] = useState(window.innerWidth)
   useEffect(() => {
@@ -22,16 +23,20 @@ const ListGames = () => {
   else if(widthwindow >= 775)gridItem = 'grid grid-cols-2 gap-2 py-[10px]'
   else gridItem = 'grid grid-cols-1 gap-2 py-[10px]'
 
-  
-
   return (
     <div className=''>
       <div className={gridItem}>
-        {data.map((item) => (
-          <div key={item.id}>
-            <GameCard data={item}/>
-          </div>
-          ))}
+        {error
+          ? (
+            <div className='text-slate-300'>
+              <div>{error.errorDetail}</div>
+            </div>)
+          : (data.map((item) => (
+              <div key={item.id}>
+                <GameCard data={item}/>
+              </div>
+            )))
+        }
         </div>
     </div>
   )

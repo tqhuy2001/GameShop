@@ -29,7 +29,7 @@ def create_staff(staff: user_schemas.StaffCreate, db: Session = Depends(get_db),
     new_user = user_models.User(**staff.dict(), permission='Staff', avatar=db_avt)
     db.add(new_user)
     db.commit()
-    return {'msg': 'Successfully created staff user'}
+    return {'detail': 'Successfully created staff user'}
 
 @manager.post('/add-admin', status_code=status.HTTP_201_CREATED)
 def create_admin(admin: user_schemas.AdminCreate, db: Session = Depends(get_db)):
@@ -43,7 +43,7 @@ def create_admin(admin: user_schemas.AdminCreate, db: Session = Depends(get_db))
     new_user = user_models.User(**admin.dict(), permission='Admin', avatar=db_avt)
     db.add(new_user)
     db.commit()
-    return {'msg': 'Successfully created admin user'}
+    return {'detail': 'Successfully created admin user'}
 
 @manager.delete('/delete-user/{user_id}', status_code=status.HTTP_200_OK)
 def delete_user(user_id: int, db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
@@ -54,7 +54,7 @@ def delete_user(user_id: int, db: Session = Depends(get_db), current_user = Depe
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Not found user')
     db.delete(db_user)
     db.commit()
-    return {'msg': 'Successfully deleted user'}
+    return {'detail': 'Successfully deleted user'}
 
 @manager.get('/get-all-users', response_model=list[user_schemas.UserBase])
 def get_all_users(db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
@@ -83,7 +83,7 @@ def delete_buying(buying_id: int, db: Session = Depends(get_db), current_user = 
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Buying does not exist')
     db.delete(db_buying)
     db.commit()
-    return {'msg': 'Successfully deleted buying'}
+    return {'detail': 'Successfully deleted buying'}
 
 @manager.get('/get-all-buyings', response_model=list[buying_schemas.Buying])
 def get_all_buyings(db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):

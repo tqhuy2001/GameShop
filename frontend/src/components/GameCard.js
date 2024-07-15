@@ -3,7 +3,7 @@ import React from 'react'
 export const GameCard = (props) => {
   const item = props.data
   return (
-    <div className='flex flex-col z-50 bg-gray-900 rounded-lg w-full h-[300px] transition ease-in-out hover:scale-105 cursor-pointer'>
+    <div className='flex flex-col z-50 bg-zinc-800 rounded-lg w-full h-[300px] transition ease-in-out hover:scale-110 cursor-pointer border border-opacity-50 border-gray-400'>
       <img className='rounded-t-lg w-full h-[160px]' src={`${process.env.REACT_APP_SERVER_URL}${process.env.REACT_APP_GET_IMAGE}${item.main_image}`}/>
       <div className='flex flex-col justify-between px-[10px] pt-[8px] pb-[3px] h-[140px]'>
         <div>

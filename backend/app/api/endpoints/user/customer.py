@@ -18,9 +18,9 @@ def create_customer(user: user_schemas.CustomerCreate, db: Session = Depends(get
     db_user1 = db.query(user_models.User).filter(user_models.User.username == user.username).first()
     db_user2 = db.query(user_models.User).filter(user_models.User.email == user.email).first()
     if db_user1:
-        raise HTTPException(status_code=status.HTTP_201_CREATED_NOT_FOUND, detail='Username has already existed')
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail='Username has already existed')
     if db_user2:
-        raise HTTPException(status_code=status.HTTP_201_CREATED_NOT_FOUND, detail='Email has already existed')
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail='Email has already existed')
     hashed_pwd = oauth2.hash(user.password)
     user.password = hashed_pwd
     t = settings.default_avatar_path
@@ -28,7 +28,7 @@ def create_customer(user: user_schemas.CustomerCreate, db: Session = Depends(get
     new_user = user_models.User(**user.dict(), permission='Customer', avatar=db_avt)
     db.add(new_user)
     db.commit()
-    return {'msg': 'Successfully created account'}
+    return {'detail': 'Successfully created account'}
 
 @customer.put('/update-cash', status_code=status.HTTP_200_OK)
 def recharge_cash(cash: int, db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
@@ -36,7 +36,7 @@ def recharge_cash(cash: int, db: Session = Depends(get_db), current_user = Depen
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='You are not customer')
     current_user.cash += cash
     db.commit()
-    return {'msg': 'Successfully charged your cash'}
+    return {'detail': 'Successfully charged your cash'}
 
 @customer.get('/get-games-bought', response_model=list[buying_schemas.CustomerBought])
 def get_all_games_bought(db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
@@ -65,4 +65,4 @@ def buy_game(game_id: int, db: Session = Depends(get_db), current_user = Depends
     new_buying = buying_models.Buying(game_id=game_id, user_id=current_user.id)
     db.add(new_buying)
     db.commit()
-    return {'msg': 'Successfully created buying'}
+    return {'detail': 'Successfully created buying'}
