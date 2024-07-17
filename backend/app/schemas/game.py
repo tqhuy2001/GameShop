@@ -16,6 +16,12 @@ class GameIn(BaseModel):
     price: int
     description: str
 
+class GameImage(BaseModel):
+    image: str
+
+    class Config:
+        from_attributes = True
+
 class Game(BaseModel):
     id: int
     name: str

@@ -1,28 +1,29 @@
-import { useSelector } from 'react-redux'
 import React, { useCallback, useEffect, useState } from 'react'
 import path from '../../utils/path'
-import { useDispatch } from 'react-redux'
-import * as actions from '../../stores/actions'
+import { useNavigate } from 'react-router-dom'
+import * as apis from '../../apis'
 
 const SignUp = () => {
-  const dispatch = useDispatch()
-  const state = useSelector(state => state.app)
-  let error = state.users.signUp?.error
-  let success = state.users.signUp?.success
+  const navigate = useNavigate()
+  useEffect(() => {
+    if(localStorage.getItem('token') !== null) {
+      navigate('/')
+    }
+  })
+
+  const [response, setResponse] = useState({})
+  const [success, setSuccess] = useState({})
+  const [error, setError] = useState({})
 
   const [reportSuccess, setReportSuccess] = useState(false)
   useEffect(() => {
     if(success?.successCode === 201) {
       setReportSuccess(true)
-      return() => success = null
     }
   }, [success])
 
   useEffect(() => {
-    if(error?.errorCode === 409) {
-      alert(error?.errorDetail)
-      return() => error = null
-    }
+    if(error?.errorCode === 409) alert(error?.errorDetail)
   }, [error])
 
   const trueStyle = 'hidden'
@@ -74,7 +75,7 @@ const SignUp = () => {
     if(cfPwdValue === '') setBlankCfPwd(falseStyle)
   })
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     handleBlank()
     
     if(usernameValue === '' || emailValue === '' ||
@@ -85,7 +86,23 @@ const SignUp = () => {
         email: emailValue,
         password: pwdValue,
       }
-      dispatch(actions.signUp(data))
+
+      try {
+        const res = await apis.signUp(data)
+        setResponse(res)
+        setSuccess({
+          successCode: response.status,
+          successDetail: response.data.detail,
+        })
+        setError({})
+      } catch (error) {
+        setSuccess({})
+        setError({
+            errorCode: error.response?.status,
+            errorDetail: error.response?.data.detail,
+        })
+      }
+
     }
   }
 
@@ -101,15 +118,15 @@ const SignUp = () => {
     if(x === 'pwd' && pwdFocus) setPwdFocus(false)
     if(x === 'cfPwd' && cfPwdFocus) setCfPwdFocus(false)
   }
+
   const handleInputChange = (x, event) => {
     if(x === 'username') setUsernameValue(event.target.value)
     if(x === 'email') setEmailValue(event.target.value)
     if(x === 'pwd') setPwdValue(event.target.value)
-    if(x === 'cfPwd') {
-      setCfPwdValue(event.target.value)
-    }
+    if(x === 'cfPwd') setCfPwdValue(event.target.value)
   }
-  return (
+  
+  if(localStorage.getItem('token') === null) return (
     <div className='flex w-full justify-center'>
       <div className={`flex w-2/3 h-full fixed bg-black bg-opacity-50 justify-center ${reportSuccess ? 'block' : 'hidden'}`}>
         <div className={`flex flex-col bg-zinc-700 w-[400px] border-2 border-gray-300 rounded-2xl h-[300px] items-center mt-[100px] text-gray-300`}>

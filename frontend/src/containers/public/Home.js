@@ -1,6 +1,5 @@
 import React from 'react'
-import Banner from '../../components/Banner'
-import { NewUpdateGames } from '../../components'
+import { NewUpdateGames, Banner } from '../../components'
 
 const Home = () => {
 

@@ -61,8 +61,6 @@ def get_all_users(db: Session = Depends(get_db), current_user = Depends(oauth2.g
     if current_user.permission != 'Admin' and current_user.permission != 'Staff':
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='You are not permitted')
     db_users = db.query(user_models.User).all()
-    if len(db_users) == 0:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Not found any users')
     return db_users
 
 @manager.get('/get-user/{user_id}', response_model=user_schemas.UserBase)
@@ -90,6 +88,4 @@ def get_all_buyings(db: Session = Depends(get_db), current_user = Depends(oauth2
     if current_user.permission != 'Admin' and current_user.permission != 'Staff':
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='You are not permitted')
     db_games = db.query(buying_models.Buying).all()
-    if len(db_games) == 0:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Not found any buyings')
     return db_games

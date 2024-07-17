@@ -11,10 +11,6 @@ const FaFacebookF = icons.FaFacebookF
 const FaYoutube = icons.FaYoutube
 const FaInstagramSquare = icons.FaInstagramSquare
 
-const facebookLink = 'https://www.facebook.com/huy.trinhquang.5203'
-const youtubeLink = 'https://www.youtube.com/channel/UCNkioQhS4ZxVV5BC2p3VCFw'
-const igLink = 'https://www.instagram.com/huy.tq307/'
-
 const SideBarLeft = () => {
 
   return (
@@ -36,17 +32,17 @@ const SideBarLeft = () => {
         <div className='pb-[75px] text-[13px] pl-4'>
             <div className='flex pb-[8px]'>
                 <NavLink
-                    to={facebookLink}
+                    to={process.env.REACT_APP_FACEBOOK_URL}
                     target='_blank'
                     className='w-[32px] h-[32px] border pt-[2px] pl-[5px] rounded-full mr-4 flex items-center'
                 ><FaFacebookF size={20}/></NavLink>
                 <NavLink
-                    to={youtubeLink}
+                    to={process.env.REACT_APP_YOUTUBE_URL}
                     target='_blank'
                     className='w-[32px] h-[32px] border rounded-full mr-4 flex justify-center items-center'
                 ><FaYoutube size={20}/></NavLink>
                 <NavLink
-                    to={igLink}
+                    to={process.env.REACT_APP_INSTAGRAM_URL}
                     target='_blank'
                     className='w-[32px] h-[32px] border rounded-full mr-4 flex justify-center items-center'
                 ><FaInstagramSquare size={19}/></NavLink>

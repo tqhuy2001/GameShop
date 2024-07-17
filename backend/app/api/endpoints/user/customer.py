@@ -44,8 +44,6 @@ def get_all_games_bought(db: Session = Depends(get_db), current_user = Depends(o
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='You are not customer')
     db_games = db.query(buying_models.Buying.game_id).filter(
         buying_models.Buying.user_id == current_user.id).all()
-    if len(db_games) == 0:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='You have not bought anygames')
     return db_games
 
 @customer.post('/add-buying/{game_id}', status_code=status.HTTP_201_CREATED)

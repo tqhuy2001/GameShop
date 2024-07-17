@@ -18,8 +18,6 @@ game = APIRouter()
 @game.get('/get-all-games', response_model=list[game_schemas.Game])
 def get_all_games(db: Session = Depends(get_db)):
     db_games = db.query(game_models.Game).all()
-    if len(db_games) == 0:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Not found any games')
     return db_games
 
 
@@ -30,12 +28,14 @@ def get_game_by_id(game_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Not found game')
     return db_game
 
+@game.get('/get-images/{game_id}', response_model=list[game_schemas.GameImage])
+def get_images_by_id(game_id: int, db: Session = Depends(get_db)):
+    db_game = db.query(game_images_models.GameImages).filter(game_images_models.GameImages.game_id == game_id).all()
+    return db_game
 
 @game.get('/search', response_model=list[game_schemas.Game])
 def search_games_by_name(search: Optional[str] = '', limit: int = 100, db: Session = Depends(get_db)):
     db_game = db.query(game_models.Game).filter(game_models.Game.name.contains(search)).limit(limit).all()
-    if len(db_game) == 0:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Not found game')
     return db_game
 
 

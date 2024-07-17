@@ -13,7 +13,7 @@ login = APIRouter()
 def user_login(user: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     db_user = db.query(user_models.User).filter(user_models.User.username == user.username).first()
     if not db_user:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='Invalid login')
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='Account has not existed')
     if not oauth2.verify(user.password, db_user.password):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='Invalid login')
     access_token = oauth2.create_access_token(data={'id': db_user.id})

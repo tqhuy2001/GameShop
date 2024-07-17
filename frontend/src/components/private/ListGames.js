@@ -1,14 +1,17 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
-import { GameCard } from './GameCard'
+import { GameCard } from '..'
 
 const ListGames = () => {
-  const state = useSelector(state => state.app)
-  const data = state.games.allGames.data
-  const error = state.games.allGames.error
 
+  const gamesBought = useSelector(state => state.users.currentUser.gamesBought)
+
+  const state = useSelector(state => state.games)
+  const data = state.allGames?.data
+  const error = state.allGames?.error
   const [widthwindow, setWidthWindow] = useState(window.innerWidth)
+  
   useEffect(() => {
     function updateSize() {
       setWidthWindow(window.innerWidth)
@@ -25,19 +28,19 @@ const ListGames = () => {
 
   return (
     <div className=''>
-      <div className={gridItem}>
-        {error
-          ? (
-            <div className='text-slate-300'>
-              <div>{error.errorDetail}</div>
-            </div>)
-          : (data.map((item) => (
+      {error?.errorCode !== undefined
+        ? (
+          <div className='text-slate-300'>
+            <div>{error?.errorDetail}</div>
+          </div>)
+        : (
+          <div className={gridItem}>
+            {data.map((item) => (
               <div key={item.id}>
-                <GameCard data={item}/>
-              </div>
-            )))
-        }
-        </div>
+                {gamesBought.includes(item.id) ? <GameCard data={item} bought={true}/> : <GameCard data={item} bought={false}/>}
+              </div>))}
+          </div>)
+      }
     </div>
   )
 }

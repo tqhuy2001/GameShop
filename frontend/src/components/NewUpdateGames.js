@@ -2,7 +2,9 @@ import React from 'react'
 
 const NewUpdateGames = () => {
   return (
-    <div>NewUpdateGames</div>
+    <div className='my-[5px] bg-white'>
+      NewUpdateGames
+    </div>
   )
 }
 

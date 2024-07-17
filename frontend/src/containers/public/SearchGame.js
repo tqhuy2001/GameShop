@@ -1,18 +1,14 @@
 import React from 'react'
-import ListGames from '../../components/ListGames'
-import * as actions from '../../stores/actions'
-import { useDispatch } from 'react-redux'
-import { useEffect } from 'react'
+import { PublicListGames } from '../../components/public'
+import { PrivateListGames } from '../../components/private'
+import { useSelector } from 'react-redux'
 
 const SearchGame = () => {
-    const dispatch = useDispatch()
+  const isLoggedIn = useSelector(state => state.users.login.success)
 
-    useEffect(() => {
-        dispatch(actions.getAllGames())
-    }, [])
   return (
-    <div className='mt-[25px] w-full'>
-        <ListGames />
+    <div className='w-full'>
+        {isLoggedIn ? <PrivateListGames /> : <PublicListGames />}
     </div>
   )
 }
