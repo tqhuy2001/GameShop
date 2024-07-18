@@ -2,8 +2,8 @@ import actionTypes from "../actions/actionTypes"
 
 const initState = {
     allGames: {
-        data: [],
-        error: {},
+        data: null,
+        error: null,
     }
 }
 

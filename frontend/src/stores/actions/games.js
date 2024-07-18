@@ -4,7 +4,6 @@ import * as apis from '../../apis'
 export const getAllGames = () => async (dispatch) => {
     try {
         const response = await apis.getAllGames()
-        if(response.status === 200){
             const gameWithImages = await Promise.all(
                 response.data.map(async (item) => {
                     const images = await getGameImages(item.id)
@@ -15,15 +14,6 @@ export const getAllGames = () => async (dispatch) => {
                 gamesData: gameWithImages,
                 error: {},
             })
-        }
-        else {
-            dispatch({
-                type: actionTypes.GET_ALL_GAMES,
-                gamesData: [],
-                error: {}
-            })
-            console.error('Error fetching data')
-        }
     } catch (error) {
         dispatch({
             type: actionTypes.GET_ALL_GAMES,

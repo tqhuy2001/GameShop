@@ -2,11 +2,13 @@ import React, { useCallback, useEffect, useState } from 'react'
 import path from '../../utils/path'
 import { useNavigate } from 'react-router-dom'
 import * as apis from '../../apis'
+import { useSelector } from 'react-redux'
 
 const SignUp = () => {
   const navigate = useNavigate()
+  const authenticated = useSelector(state => state.users.login.authenticated)
   useEffect(() => {
-    if(localStorage.getItem('token') !== null) {
+    if(authenticated === true) {
       navigate('/')
     }
   })
@@ -102,7 +104,6 @@ const SignUp = () => {
             errorDetail: error.response?.data.detail,
         })
       }
-
     }
   }
 
@@ -125,10 +126,10 @@ const SignUp = () => {
     if(x === 'pwd') setPwdValue(event.target.value)
     if(x === 'cfPwd') setCfPwdValue(event.target.value)
   }
-  
-  if(localStorage.getItem('token') === null) return (
+
+  return (
     <div className='flex w-full justify-center'>
-      <div className={`flex w-2/3 h-full fixed bg-black bg-opacity-50 justify-center ${reportSuccess ? 'block' : 'hidden'}`}>
+      <div className={`left-0 top-[70px] flex w-screen h-screen fixed bg-black bg-opacity-50 justify-center ${reportSuccess ? 'block' : 'hidden'}`}>
         <div className={`flex flex-col bg-zinc-700 w-[400px] border-2 border-gray-300 rounded-2xl h-[300px] items-center mt-[100px] text-gray-300`}>
           <div className='flex w-full text-white justify-end'>
             <button 
@@ -153,83 +154,86 @@ const SignUp = () => {
           </div>
         </div>
       </div>
-      <div className={`flex flex-col bg-zinc-700 w-2/3 border-2 border-gray-300 rounded-2xl h-[750px] items-center py-[35px] px-[80px] text-gray-300 mt-[25px]`}>
-        <div className='text-[30px] font-bold'>SIGN UP</div>
-        <div className='flex flex-col w-full text-gray-300 text-[19px] mt-[50px]'>
-          <div className='flex flex-col h-[110px]'>
-            Username
-            <input 
-              className={`placeholder-gray-500 rounded-xl border ${usernameFocus ? 'border-gray-200' : 'border-gray-500'} bg-zinc-700 h-[40px] px-[15px] outline-none text-gray-300 text-[17px] mt-[8px]`} 
-              type='text' 
-              placeholder='Username'
-              onFocus={() => handleFocus('username')}
-              onBlur={() => handleBlur('username')}
-              value={usernameValue}
-              onChange={(e) => handleInputChange('username', e)}
-            />
-            <div className={blankUsername}>
-              Cannot be left blank
+      {authenticated ? null : 
+      <div className='w-full flex justify-center mt-[25px]'>
+        <div className={`flex flex-col bg-zinc-700 w-3/4 border-2 border-gray-300 rounded-2xl h-[750px] items-center py-[35px] px-[80px] text-gray-300`}>
+          <div className='text-[30px] font-bold'>SIGN UP</div>
+          <div className='flex flex-col w-full text-gray-300 text-[19px] mt-[50px]'>
+            <div className='flex flex-col h-[110px]'>
+              Username
+              <input 
+                className={`placeholder-gray-500 rounded-xl border ${usernameFocus ? 'border-gray-200' : 'border-gray-500'} bg-zinc-700 h-[40px] px-[15px] outline-none text-gray-300 text-[17px] mt-[8px]`} 
+                type='text' 
+                placeholder='Username'
+                onFocus={() => handleFocus('username')}
+                onBlur={() => handleBlur('username')}
+                value={usernameValue}
+                onChange={(e) => handleInputChange('username', e)}
+              />
+              <div className={blankUsername}>
+                Cannot be left blank
+              </div>
             </div>
+            <div className='flex flex-col h-[110px]'>
+              Email
+              <input 
+                className={`placeholder-gray-500 rounded-xl border ${emailFocus ? 'border-gray-200' : 'border-gray-500'} bg-zinc-700 h-[40px] px-[15px] outline-none text-gray-300 text-[17px] mt-[8px]`} 
+                type='text' 
+                placeholder='Email'
+                onFocus={() => handleFocus('email')}
+                onBlur={() => handleBlur('email')}
+                value={emailValue}
+                onChange={(e) => handleInputChange('email', e)}
+              />
+              <div className={blankEmail}>
+                Cannot be left blank
+              </div>
+            </div>
+            <div className='flex flex-col h-[110px]'>
+              Password
+              <input 
+                className={`placeholder-gray-500 rounded-xl border ${pwdFocus ? 'border-gray-200' : 'border-gray-500'} bg-zinc-700 h-[40px] px-[15px] outline-none text-gray-300 text-[17px] mt-[8px]`} 
+                type='password' 
+                placeholder='Password'
+                onFocus={() => handleFocus('pwd')}
+                onBlur={() => handleBlur('pwd')}
+                value={pwdValue}
+                onChange={(e) => handleInputChange('pwd', e)}
+              />
+              <div className={blankPwd}>
+                Cannot be left blank
+              </div>
+            </div>
+            <div className='flex flex-col h-[130px]'>
+              Confirm Password
+              <input 
+                className={`placeholder-gray-500 rounded-xl border ${cfPwdFocus ? 'border-gray-200' : 'border-gray-500'} bg-zinc-700 h-[40px] px-[15px] outline-none text-gray-300 text-[17px] mt-[8px]`} 
+                type='password' 
+                placeholder='Confirm Password'
+                onFocus={() => handleFocus('cfPwd')}
+                onBlur={() => handleBlur('cfPwd')}
+                value={cfPwdValue}
+                onChange={(e) => handleInputChange('cfPwd', e)}
+              />
+              <div className={blankCfPwd}>
+                Cannot be left blank
+              </div>
+              <div className={stateCfPwdStyle}>
+                Password does not match with confirm password
+              </div>
+            </div>
+            
           </div>
-          <div className='flex flex-col h-[110px]'>
-            Email
-            <input 
-              className={`placeholder-gray-500 rounded-xl border ${emailFocus ? 'border-gray-200' : 'border-gray-500'} bg-zinc-700 h-[40px] px-[15px] outline-none text-gray-300 text-[17px] mt-[8px]`} 
-              type='text' 
-              placeholder='Email'
-              onFocus={() => handleFocus('email')}
-              onBlur={() => handleBlur('email')}
-              value={emailValue}
-              onChange={(e) => handleInputChange('email', e)}
-            />
-            <div className={blankEmail}>
-              Cannot be left blank
+            <button
+              className='flex text-[20px] mt-[25px] w-[200px] h-[40px] border border-gray-300 bg-zinc-600 rounded-lg text-gray-300 font-bold tracking-wider items-center justify-center hover:bg-gray-400 hover:text-gray-950'
+              onClick={handleSubmit}
+            >SUBMIT</button>
+            <div className='text-gray-300 text-[15px] mt-[20px]'>
+              Do you already have an account yet?
+              <a className='underline ml-[6px] hover:text-white' href={path.log_in}>Login</a>
             </div>
-          </div>
-          <div className='flex flex-col h-[110px]'>
-            Password
-            <input 
-              className={`placeholder-gray-500 rounded-xl border ${pwdFocus ? 'border-gray-200' : 'border-gray-500'} bg-zinc-700 h-[40px] px-[15px] outline-none text-gray-300 text-[17px] mt-[8px]`} 
-              type='password' 
-              placeholder='Password'
-              onFocus={() => handleFocus('pwd')}
-              onBlur={() => handleBlur('pwd')}
-              value={pwdValue}
-              onChange={(e) => handleInputChange('pwd', e)}
-            />
-            <div className={blankPwd}>
-              Cannot be left blank
-            </div>
-          </div>
-          <div className='flex flex-col h-[130px]'>
-            Confirm Password
-            <input 
-              className={`placeholder-gray-500 rounded-xl border ${cfPwdFocus ? 'border-gray-200' : 'border-gray-500'} bg-zinc-700 h-[40px] px-[15px] outline-none text-gray-300 text-[17px] mt-[8px]`} 
-              type='password' 
-              placeholder='Confirm Password'
-              onFocus={() => handleFocus('cfPwd')}
-              onBlur={() => handleBlur('cfPwd')}
-              value={cfPwdValue}
-              onChange={(e) => handleInputChange('cfPwd', e)}
-            />
-            <div className={blankCfPwd}>
-              Cannot be left blank
-            </div>
-            <div className={stateCfPwdStyle}>
-              Password does not match with confirm password
-            </div>
-          </div>
-          
         </div>
-          <button
-            className='flex text-[20px] mt-[25px] w-[200px] h-[40px] border border-gray-300 bg-zinc-600 rounded-lg text-gray-300 font-bold tracking-wider items-center justify-center hover:bg-gray-400 hover:text-gray-950'
-            onClick={handleSubmit}
-          >SUBMIT</button>
-          <div className='text-gray-300 text-[15px] mt-[20px]'>
-            Do you already have an account yet?
-            <a className='underline ml-[6px] hover:text-white' href={path.log_in}>Login</a>
-          </div>
-      </div>
+      </div>}
     </div>
   )
 }

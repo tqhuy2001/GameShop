@@ -1,15 +1,12 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { GameCard } from '..'
 
-const ListGames = () => {
-
-  const gamesBought = useSelector(state => state.users.currentUser.gamesBought)
-
-  const state = useSelector(state => state.games)
-  const data = state.allGames?.data
-  const error = state.allGames?.error
+const ListGames = (props) => {
+  const data = props.data
+  const error = props.error
+  const gamesBought = props.gamesBought
+  
   const [widthwindow, setWidthWindow] = useState(window.innerWidth)
   
   useEffect(() => {

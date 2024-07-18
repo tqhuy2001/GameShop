@@ -11,7 +11,7 @@ const Community = () => {
   })
   
   return (
-    <div className={`flex flex-col items-center rounded-lg border border-gray-500 w-[350px] h-[810px] text-gray-300 ${widthwindow > 1400 ? 'block' : 'hidden'}`}>
+    <div className={`flex flex-col items-center rounded-lg border border-gray-500 w-[250px] h-[810px] text-gray-300 ${widthwindow > 1400 ? 'block' : 'hidden'}`}>
       Community
     </div>
   )

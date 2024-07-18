@@ -2,13 +2,13 @@ import actionTypes from "../actions/actionTypes"
 
 const initState = {
     login: {
-        success: false,
-        error: {},
+        authenticated: null,
+        error: null,
     },
     currentUser: {
-        dataUser: {},
-        gamesBought: [],
-        error: {},
+        dataUser: null,
+        gamesBought: null,
+        error: null,
     },
 }
 
@@ -18,7 +18,7 @@ const usersReducer = (state = initState, action) => {
             return {
                 ...state,
                 login: {
-                    success: action.success,
+                    authenticated: action.authenticated,
                     error: action.error,
                 }
             }
@@ -35,7 +35,7 @@ const usersReducer = (state = initState, action) => {
             return {
                 ...state,
                 login: {
-                    success: false,
+                    authenticated: false,
                     error: {},
                 },
                 currentUser: {

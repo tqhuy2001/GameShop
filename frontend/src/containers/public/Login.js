@@ -7,17 +7,17 @@ import { useNavigate } from 'react-router-dom'
 const Login = () => {
 
   const dispatch = useDispatch()
-  const state = useSelector(state => state.users)
-  const error = state.login?.error
-  const success = state.login?.success
+  const state = useSelector(state => state.users.login)
+  const error = state.error
+  const authenticated = state.authenticated
 
   const navigate = useNavigate()
   useEffect(() => {
-    if(localStorage.getItem('token') !== null) {
+    if(authenticated === true) {
       navigate('/')
     }
-  })
-  
+  }, [authenticated])
+
   let data = {
     username: '',
     password: '',
@@ -72,9 +72,10 @@ const Login = () => {
     dispatch(actions.login(data))
   }
 
-  if(localStorage.getItem('token') === null) return (
+  return (
     <div className='flex w-full justify-center'>
-      <div className={`flex flex-col bg-zinc-700 w-2/3 border-2 border-gray-300 rounded-2xl h-[550px] items-center py-[35px] px-[80px] text-gray-300 mt-[25px]`}>
+      {authenticated ? null : 
+      <div className={`flex flex-col bg-zinc-700 w-3/4 border-2 border-gray-300 rounded-2xl h-[550px] items-center py-[35px] px-[80px] text-gray-300 mt-[25px]`}>
         <div className='text-[30px] font-bold'>LOGIN</div>
         <div className='flex flex-col w-full text-gray-300 text-[19px] mt-[50px]'>
           <div className='flex flex-col h-[110px]'>
@@ -110,7 +111,7 @@ const Login = () => {
         </div>
         <div className='flex flex-col items-center w-full h-[80px] mt-[10px]'>
           <div className='h-[30px]'>
-            <div className={(!success && error?.errorCode === 403) ? falseStyle : trueStyle}>
+            <div className={(!authenticated && error?.errorCode === 403) ? falseStyle : trueStyle}>
               {error?.errorDetail}
             </div>
           </div>
@@ -119,7 +120,7 @@ const Login = () => {
             onClick={handleSubmit}
           >LOGIN</button>
         </div>
-      </div>
+      </div>}
     </div>
   )
 }

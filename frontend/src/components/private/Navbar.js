@@ -19,7 +19,7 @@ const Navbar = () => {
     }
 
     return (
-        <div className='z-50 h-[70px] flex bg-zinc-800 pl-[100px] fixed w-screen'>
+        <div className='z-40 h-[70px] flex bg-zinc-800 pl-[100px] fixed w-screen'>
             <div className='w-1/6 flex pl-[50px]'>
                 <a className='flex w-[140px] justify-center items-center' href='/'>
                     <img className='w-[100px] h-[60px]' src={logoPath} alt='logo' />

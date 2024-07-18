@@ -22,15 +22,9 @@ const getGamesBought = async () => {
     let valueReturn = []
     try {
         const response = await apis.getGamesBought()
-        if(response?.status === 200){
             response?.data.map(item => (
                 valueReturn = [...valueReturn, item.game_id]
             ))
-        }
-        else {
-            console.error('Error fetching data')
-            valueReturn = []
-        }
     } catch (error) {
         valueReturn = []
     }
@@ -43,13 +37,26 @@ export const getExistedLogin = () => async (dispatch) => {
         const gamesBought = await getGamesBought()
         dispatch({
             type: actionTypes.LOGIN,
-            success: true,
+            authenticated: true,
             error: {},
         })
         dispatch({
             type: actionTypes.GET_CURRENT_USER,
             dataUser: dataUser,
             gamesBought: gamesBought,
+            error: {},
+        })            
+    }
+    else {
+        dispatch({
+            type: actionTypes.LOGIN,
+            authenticated: false,
+            error: {},
+        })
+        dispatch({
+            type: actionTypes.GET_CURRENT_USER,
+            dataUser: {},
+            gamesBought: [],
             error: {},
         })            
     }
@@ -70,7 +77,7 @@ export const login = (data) => async (dispatch) => {
         const gamesBought = await getGamesBought()
         dispatch({
             type: actionTypes.LOGIN,
-            success: true,
+            authenticated: true,
             error: {},
         })
         dispatch({
@@ -82,7 +89,7 @@ export const login = (data) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: actionTypes.LOGIN,
-            success: false,
+            authenticated: false,
             error: {
                 errorCode: error.response?.status,
                 errorDetail: error.response?.data.detail,
