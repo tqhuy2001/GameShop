@@ -1,9 +1,27 @@
 .bg_hover{
     background: linear-gradient(rgb(39, 39, 42), rgb(39, 39, 42)) no-repeat;
     background-position: center;
-    background-size:0% 54px;
+    background-size: 0% 54px;
     transition: background-size 0.15s ease-out;
 }
 .bg_hover:hover {
     background-size:100% 54px;
+}
+
+.community_appear{
+    right: 0;
+    transition: right 0.3s ease-in-out;
+}
+.community_fadeout{
+    right: -250px;
+    transition: right 0.3s ease-in-out;
+}
+
+.outlet_community_appear{
+    margin-right: 275px;
+    transition: margin-right 0.3s ease-in-out
+}
+.outlet_community_fadeout{
+    margin-right: 25px;
+    transition: margin-right 0.3s ease-in-out
 }

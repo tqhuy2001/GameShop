@@ -24,7 +24,7 @@ const ListGames = (props) => {
   else gridItem = 'grid grid-cols-1 gap-2 py-[10px]'
 
   return (
-    <div className=''>
+    <div className='w-full'>
       {error?.errorCode !== undefined
         ? (
           <div className='text-slate-300'>

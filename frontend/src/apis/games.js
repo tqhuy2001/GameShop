@@ -23,3 +23,15 @@ export const getGameImages = (gameId) => new Promise( async (resolve, reject) =>
         reject(error)
     }
 })
+
+export const getGameCategories = (gameId) => new Promise( async (resolve, reject) => {
+    try {
+        const response = await axios({
+            url: `/game/get-categories-id/${gameId}`,
+            method: 'get',
+        })
+        resolve(response)
+    } catch (error) {
+        reject(error)
+    }
+})

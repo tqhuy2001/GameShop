@@ -32,6 +32,9 @@ const getGamesBought = async () => {
 }
 
 export const getExistedLogin = () => async (dispatch) => {
+    dispatch({
+        type: actionTypes.LOADING
+    })
     if(localStorage.getItem('token') !== null) {
         const dataUser = await getInfoCurrentUser()
         const gamesBought = await getGamesBought()
@@ -60,16 +63,28 @@ export const getExistedLogin = () => async (dispatch) => {
             error: {},
         })            
     }
+    dispatch({
+        type: actionTypes.STOP_LOADING
+    })
 }
 
 export const signOut = () => (dispatch) => {
+    dispatch({
+        type: actionTypes.LOADING
+    })
     localStorage.removeItem('token')
     dispatch({
         type: actionTypes.SIGN_OUT,
     })
+    dispatch({
+        type: actionTypes.STOP_LOADING
+    })
 }
 
 export const login = (data) => async (dispatch) => {
+    dispatch({
+        type: actionTypes.LOADING
+    })
     try {
         const responseLogin = await apis.login(data)
         localStorage.setItem('token', responseLogin.data.access_token)
@@ -96,4 +111,7 @@ export const login = (data) => async (dispatch) => {
             },
         })
     }
+    dispatch({
+        type: actionTypes.STOP_LOADING
+    })
 }

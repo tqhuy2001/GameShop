@@ -10,6 +10,8 @@ from app.core.dependencies import get_db
 from app.schemas import game as game_schemas
 from app.api.endpoints.login import oauth2
 from app.models import game as game_models
+from app.models import game_categories as game_categories_models
+from app.schemas import game_categories as game_categories_schemas
 from app.models import game_images as game_images_models
 from app.config import settings
 
@@ -52,6 +54,53 @@ def add_game(game: game_schemas.GameIn, db: Session = Depends(get_db), current_u
     db.refresh(new_game)
     return {'detail': 'Successfully created game'}
 
+@game.get('/get-categories-id/{game_id}', response_model=list[game_categories_schemas.GameCategoryOut])
+def get_categories_by_gameid(game_id: int, db: Session = Depends(get_db)):
+    db_game = db.query(game_models.Game).filter(game_models.Game.id == game_id).first()
+    if db_game is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Game not found')
+    db_game = db.query(game_categories_models.GameCategories.category).filter(game_categories_models.GameCategories.game_id == game_id).all()
+    return db_game
+
+@game.post('/add-category', status_code=status.HTTP_201_CREATED)
+def add_category(game_id: int, category: str, db: Session = Depends(get_db), current_user=Depends(oauth2.get_current_user)):
+    if current_user.permission != 'Admin' and current_user.permission != 'Staff':
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='You are not permitted')
+    db_game = db.query(game_models.Game).filter(game_models.Game.id == game_id).first()
+    if db_game is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Game not found')
+    db_game = db.query(game_categories_models.GameCategories).filter(game_categories_models.GameCategories.category == category).first()
+    if db_game:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail='Category has already existed')
+    new_category = game_categories_models.GameCategories(game_id=game_id, category=category)
+    db.add(new_category)
+    db.commit()
+    db.refresh(new_category)
+    return {'detail': 'Successfully created category'}
+
+@game.delete('/delete-category/{id}', status_code=status.HTTP_200_OK)
+def delete_category(id: int, db: Session = Depends(get_db), current_user=Depends(oauth2.get_current_user)):
+    if current_user.permission != 'Admin':
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='You are not permitted')
+    db_game_category = db.query(game_categories_models.GameCategories).filter(game_categories_models.GameCategories.id == id).first()
+    if db_game_category is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Not found category of game')
+    db.delete(db_game_category)
+    db.commit()
+    return {'detail': 'Successfully deleted category of game'}
+
+@game.put('/update-category/{id}', status_code=status.HTTP_200_OK)
+def update_category(id: int, category: str, db: Session = Depends(get_db),
+                current_user=Depends(oauth2.get_current_user)):
+    if current_user.permission != 'Admin' and current_user.permission != 'Staff':
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='You are not permitted')
+    db_category = db.query(game_categories_models.GameCategories).filter(game_categories_models.GameCategories.id == id).first()
+    if db_category is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Not found category of game')
+    db_category.category = category
+    db.commit()
+    db.refresh(db_category)
+    return {'detail': 'Successfully updated category of game'}
 
 @game.patch('/update-main-image/{game_id}', status_code=status.HTTP_200_OK)
 async def update_main_image(game_id: int, main_image: Annotated[UploadFile, File()], db: Session = Depends(get_db),
