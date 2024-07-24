@@ -25,10 +25,10 @@ const ListGames = (props) => {
   return (
     <div className=''>
       <div className={gridItem}>
-        {error?.errorCode !== undefined
+        {data.length === 0
           ? (
             <div className='text-slate-300'>
-              <div>{error?.errorDetail}</div>
+              <div>Not found any games</div>
             </div>)
           : (data.map((item) => (
               <div key={item.id}>

@@ -25,7 +25,7 @@ def create_customer(user: user_schemas.CustomerCreate, db: Session = Depends(get
     user.password = hashed_pwd
     t = settings.default_avatar_path
     db_avt = base64.b64encode(t.encode())
-    new_user = user_models.User(**user.dict(), permission='Customer', avatar=db_avt)
+    new_user = user_models.User(**user.model_dump(), permission='Customer', avatar=db_avt)
     db.add(new_user)
     db.commit()
     return {'detail': 'Successfully created account'}

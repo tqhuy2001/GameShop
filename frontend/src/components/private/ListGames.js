@@ -4,7 +4,6 @@ import { GameCard } from '..'
 
 const ListGames = (props) => {
   const data = props.data
-  const error = props.error
   const gamesBought = props.gamesBought
   
   const [widthwindow, setWidthWindow] = useState(window.innerWidth)
@@ -25,10 +24,10 @@ const ListGames = (props) => {
 
   return (
     <div className='w-full'>
-      {error?.errorCode !== undefined
+      {data.length == 0
         ? (
           <div className='text-slate-300'>
-            <div>{error?.errorDetail}</div>
+            <div>Not found any games</div>
           </div>)
         : (
           <div className={gridItem}>

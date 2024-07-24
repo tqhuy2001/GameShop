@@ -48,7 +48,7 @@ def add_game(game: game_schemas.GameIn, db: Session = Depends(get_db), current_u
     db_game = db.query(game_models.Game).filter(game_models.Game.name == game.name).first()
     if db_game:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail='Game already exists')
-    new_game = game_models.Game(**game.dict(), user_created_name=current_user.username)
+    new_game = game_models.Game(**game.model_dump(), user_created_name=current_user.username)
     db.add(new_game)
     db.commit()
     db.refresh(new_game)
@@ -118,7 +118,7 @@ async def update_main_image(game_id: int, main_image: Annotated[UploadFile, File
         os.mkdir(path)
     except:
         pass
-    parent_dir = parent_dir + directory + '\\\\'
+    parent_dir = parent_dir + directory + '/'
     main_image_name = 'main_image' + '.png'
     try:
         file_path = f'{parent_dir}{main_image_name}'
@@ -126,12 +126,10 @@ async def update_main_image(game_id: int, main_image: Annotated[UploadFile, File
             f.write(contents)
     except Exception as e:
         return {'msg': e.args}
-    db_main_image = parent_dir.replace('\\\\', '/')
-    t = db_main_image + main_image_name
+    t = parent_dir + main_image_name
     db_game.main_image = base64.b64encode(t.encode())
     db.commit()
     return {'detail': 'OK'}
-
 
 @game.post('/add-images/{game_id}', status_code=status.HTTP_200_OK)
 async def add_images(game_id: int, images: list[UploadFile] = File(...), db: Session = Depends(get_db),
@@ -159,7 +157,7 @@ async def add_images(game_id: int, images: list[UploadFile] = File(...), db: Ses
             os.mkdir(path)
         except:
             pass
-        parent_dir = parent_dir + directory + '\\\\'
+        parent_dir = parent_dir + directory + '/'
         image_name = 'image' + str(i) + '.png'
         try:
             file_path = f'{parent_dir}' + f'{image_name}'
@@ -167,8 +165,7 @@ async def add_images(game_id: int, images: list[UploadFile] = File(...), db: Ses
                 f.write(contents)
         except Exception as e:
             return {'msg': e.args}
-        db_image = file_path.replace('\\\\', '/')
-        t = db_image
+        t = file_path
         new_image = game_images_models.GameImages(game_id=game_id, image=base64.b64encode(t.encode()))
         db.add(new_image)
         db.commit()

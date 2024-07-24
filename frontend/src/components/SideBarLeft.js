@@ -34,17 +34,17 @@ const SideBarLeft = () => {
                 <NavLink
                     to={process.env.REACT_APP_FACEBOOK_URL}
                     target='_blank'
-                    className='w-[32px] h-[32px] border pt-[2px] pl-[5px] rounded-full mr-4 flex items-center'
+                    className='w-[32px] h-[32px] border pt-[2px] pl-[5px] rounded-full mr-4 flex items-center hover:text-zinc-950 hover:bg-gray-300'
                 ><FaFacebookF size={20}/></NavLink>
                 <NavLink
                     to={process.env.REACT_APP_YOUTUBE_URL}
                     target='_blank'
-                    className='w-[32px] h-[32px] border rounded-full mr-4 flex justify-center items-center'
+                    className='w-[32px] h-[32px] border rounded-full mr-4 flex justify-center items-center hover:text-zinc-950 hover:bg-gray-300'
                 ><FaYoutube size={20}/></NavLink>
                 <NavLink
                     to={process.env.REACT_APP_INSTAGRAM_URL}
                     target='_blank'
-                    className='w-[32px] h-[32px] border rounded-full mr-4 flex justify-center items-center'
+                    className='w-[32px] h-[32px] border rounded-full mr-4 flex justify-center items-center hover:text-zinc-950 hover:bg-gray-300'
                 ><FaInstagramSquare size={19}/></NavLink>
             </div>
             <p>© 2024 GameShop</p>

@@ -27,8 +27,7 @@ async def upload_avatar(db: Session = Depends(get_db), file: UploadFile = File(.
             f.write(contents)
     except Exception as e:
         return {'msg': e.args}
-    db_avatar = parent_dir.replace('\\\\', '/')
-    t = db_avatar + avatar_name
+    t = parent_dir + avatar_name
     db_avt = base64.b64encode(t.encode())
     db_user.avatar = db_avt
     db.commit()

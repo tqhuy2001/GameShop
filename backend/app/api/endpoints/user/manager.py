@@ -26,7 +26,7 @@ def create_staff(staff: user_schemas.StaffCreate, db: Session = Depends(get_db),
     staff.password = hashed_pwd
     t = settings.default_avatar_path
     db_avt = base64.b64encode(t.encode())
-    new_user = user_models.User(**staff.dict(), permission='Staff', avatar=db_avt)
+    new_user = user_models.User(**staff.model_dump(), permission='Staff', avatar=db_avt)
     db.add(new_user)
     db.commit()
     return {'detail': 'Successfully created staff user'}
@@ -40,7 +40,7 @@ def create_admin(admin: user_schemas.AdminCreate, db: Session = Depends(get_db))
     admin.password = hashed_pwd
     t = settings.default_avatar_path
     db_avt = base64.b64encode(t.encode())
-    new_user = user_models.User(**admin.dict(), permission='Admin', avatar=db_avt)
+    new_user = user_models.User(**admin.model_dump(), permission='Admin', avatar=db_avt)
     db.add(new_user)
     db.commit()
     return {'detail': 'Successfully created admin user'}

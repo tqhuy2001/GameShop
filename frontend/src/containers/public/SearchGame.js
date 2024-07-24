@@ -1,24 +1,20 @@
 import React from 'react'
 import { PublicListGames } from '../../components/public'
 import { PrivateListGames } from '../../components/private'
-import { useDispatch, useSelector } from 'react-redux'
-import * as actions from '../../stores/actions'
+import { useSelector } from 'react-redux'
+import { Loading } from '../../components'
 
 const SearchGame = () => {
-  const dispatch = useDispatch()
 
   const isLoggedIn = useSelector(state => state.users.login.authenticated)
   const gamesBought = useSelector(state => state.users.currentUser.gamesBought)
 
-  const state = useSelector(state => state.games.allGames)
-  const data = state.data
-  const error = state.error
-
-  if(data === null || isLoggedIn === null || gamesBought === null) dispatch(actions.loading())
+  const data = useSelector(state => state.games.allGames.data)
 
   return (
     <div className='w-full'>
-      {isLoggedIn ? <PrivateListGames gamesBought={gamesBought} data={data} error={error} /> : <PublicListGames gamesBought={gamesBought} data={data} error={error} />}
+      {data === null || isLoggedIn === null || gamesBought === null ? <Loading /> :
+      (isLoggedIn ? <PrivateListGames gamesBought={gamesBought} data={data} /> : <PublicListGames gamesBought={gamesBought} data={data} />)}
     </div>
   )
 }
