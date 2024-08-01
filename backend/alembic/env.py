@@ -10,6 +10,7 @@ from app.models import user as user_models
 from app.models import game as game_models
 from app.models import game_images as game_images_models
 from app.models import game_categories as game_categories_models
+from app.models import game_like as game_like_models
 
 from app.config import settings
 
@@ -38,7 +39,8 @@ target_metadata = combine_metadata(
     game_models.Base.metadata,
     buying_models.Base.metadata,
     game_images_models.Base.metadata,
-    game_categories_models.Base.metadata
+    game_categories_models.Base.metadata,
+    game_like_models.Base.metadata
 )
 
 # other values from the config, defined by the needs of env.py,

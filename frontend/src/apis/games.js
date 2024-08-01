@@ -35,3 +35,21 @@ export const getGameCategories = (gameId) => new Promise( async (resolve, reject
         reject(error)
     }
 })
+
+export const likeGame = (gameId) => new Promise( async (resolve, reject) => {
+    const token = localStorage.getItem('token')
+    try {
+        const response = await axios({
+            url: `/game/like/${gameId}`,
+            method: 'options',
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            data: ''
+        })
+        resolve(response)
+    } catch (error) {
+        reject(error)
+    }
+})

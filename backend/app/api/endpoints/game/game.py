@@ -10,6 +10,7 @@ from app.core.dependencies import get_db
 from app.schemas import game as game_schemas
 from app.api.endpoints.login import oauth2
 from app.models import game as game_models
+from app.models import game_like as game_like_models
 from app.models import game_categories as game_categories_models
 from app.schemas import game_categories as game_categories_schemas
 from app.models import game_images as game_images_models
@@ -22,6 +23,22 @@ def get_all_games(db: Session = Depends(get_db)):
     db_games = db.query(game_models.Game).all()
     return db_games
 
+@game.options('/like/{game_id}', status_code=status.HTTP_200_OK)
+def like_game(game_id: int, db: Session = Depends(get_db), current_user=Depends(oauth2.get_current_user)):
+    db_game = db.query(game_models.Game).filter(game_models.Game.id == game_id).first()
+    if db_game is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Game has not existed')
+    db_like_game = db.query(game_like_models.GameLike).filter(game_like_models.GameLike.user_id == current_user.id,
+                                                              game_like_models.GameLike.game_id == game_id).first()
+    if db_like_game is None:
+        new_like = game_like_models.GameLike(user_id=current_user.id, game_id=game_id)
+        db.add(new_like)
+        db.commit()
+        return {'detail': 'Liked game'}
+    else:
+        db.delete(db_like_game)
+        db.commit()
+        return {'detail': 'Disliked game'}
 
 @game.get('/get-game-id/{game_id}', response_model=game_schemas.Game)
 def get_game_by_id(game_id: int, db: Session = Depends(get_db)):
@@ -34,12 +51,6 @@ def get_game_by_id(game_id: int, db: Session = Depends(get_db)):
 def get_images_by_id(game_id: int, db: Session = Depends(get_db)):
     db_game = db.query(game_images_models.GameImages).filter(game_images_models.GameImages.game_id == game_id).all()
     return db_game
-
-@game.get('/search', response_model=list[game_schemas.Game])
-def search_games_by_name(search: Optional[str] = '', limit: int = 100, db: Session = Depends(get_db)):
-    db_game = db.query(game_models.Game).filter(game_models.Game.name.contains(search)).limit(limit).all()
-    return db_game
-
 
 @game.post('/add', status_code=status.HTTP_201_CREATED)
 def add_game(game: game_schemas.GameIn, db: Session = Depends(get_db), current_user=Depends(oauth2.get_current_user)):
@@ -69,7 +80,7 @@ def add_category(game_id: int, category: str, db: Session = Depends(get_db), cur
     db_game = db.query(game_models.Game).filter(game_models.Game.id == game_id).first()
     if db_game is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Game not found')
-    db_game = db.query(game_categories_models.GameCategories).filter(game_categories_models.GameCategories.category == category).first()
+    db_game = db.query(game_categories_models.GameCategories).filter(game_categories_models.GameCategories.category == category, game_categories_models.GameCategories.game_id == game_id).first()
     if db_game:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail='Category has already existed')
     new_category = game_categories_models.GameCategories(game_id=game_id, category=category)

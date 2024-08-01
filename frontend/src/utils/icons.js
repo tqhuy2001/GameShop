@@ -12,6 +12,8 @@ import { MdOutlineDownloadDone } from "react-icons/md";
 import { TbBrandCashapp } from "react-icons/tb";
 import { FaChevronLeft } from "react-icons/fa";
 import { FaChevronRight } from "react-icons/fa";
+import { BiLike } from "react-icons/bi";
+import { LuMenuSquare } from "react-icons/lu";
 
 const icons = {
     CiSearch,
@@ -28,6 +30,8 @@ const icons = {
     TbBrandCashapp,
     FaChevronLeft,
     FaChevronRight,
+    BiLike,
+    LuMenuSquare,
 }
 
 export default icons

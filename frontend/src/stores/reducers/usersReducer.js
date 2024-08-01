@@ -8,6 +8,7 @@ const initState = {
     currentUser: {
         dataUser: null,
         gamesBought: null,
+        gamesLiked: null,
         error: null,
     },
 }
@@ -28,6 +29,7 @@ const usersReducer = (state = initState, action) => {
                 currentUser: {
                     dataUser: action.dataUser,
                     gamesBought: action.gamesBought,
+                    gamesLiked: action.gamesLiked,
                     error: action.error,
                 }
             }

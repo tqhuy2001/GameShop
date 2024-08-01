@@ -67,3 +67,20 @@ export const getGamesBought = () => new Promise( async (resolve, reject) => {
         reject(error)
     }
 })
+
+export const getGamesLiked = () => new Promise( async (resolve, reject) => {
+    const token = localStorage.getItem('token')
+    try {
+        const response = await axios({
+            url: '/user/get-games-liked',
+            method: 'get',
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${token}`, 
+            },
+        })
+        resolve(response)
+    } catch (error) {
+        reject(error)
+    }
+})

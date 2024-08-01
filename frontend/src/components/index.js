@@ -1,7 +1,1 @@
-export { default as NewUpdateGames } from './NewUpdateGames'
-export { default as SideBarLeft } from './SideBarLeft'
-export { default as Banner } from './Banner'
-export { default as Community } from './Community'
-export { default as Search } from './Search'
-export { default as GameCard } from './GameCard'
 export { default as Loading } from './Loading'

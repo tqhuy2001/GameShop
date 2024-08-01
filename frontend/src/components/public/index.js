@@ -1,2 +1,2 @@
-export { default as PublicNavbar } from './Navbar'
-export { default as PublicListGames } from './ListGames'
+export { default as Community } from './Community'
+export { default as SideBarLeft } from './SideBarLeft'

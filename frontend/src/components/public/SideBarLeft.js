@@ -1,8 +1,8 @@
 import React from 'react'
-import menuSideBarLeft from '../utils/menuSideBarLeft'
+import menuSideBarLeft from '../../utils/menuSideBarLeft'
 import { NavLink } from 'react-router-dom'
-import icons from '../utils/icons'
-import styles from '../mystyle.module.css'
+import icons from '../../utils/icons'
+import styles from '../../mystyle.module.css'
 
 const notActiveStyle = `flex py-[13px] items-center text-lg tracking-wide mb-[1px] hover:text-yellow-600 ${styles.bg_hover}`
 const activeStyle = 'bg-zinc-800 text-yellow-600 flex py-[13px] items-center text-lg tracking-wide mb-[1px]'
@@ -15,7 +15,7 @@ const SideBarLeft = () => {
 
   return (
     <div className='fixed top-[70px] border-r-[1px] border-gray-500 text-gray-300 flex flex-col w-[275px] h-screen justify-between'>
-        <div className='mt-[8px] flex flex-col'>
+        <div className='mt-[8px] flex flex-col select-none'>
             {menuSideBarLeft.map((item, index) => (
                 <NavLink
                     className={({isActive}) => (isActive ? activeStyle : notActiveStyle)}

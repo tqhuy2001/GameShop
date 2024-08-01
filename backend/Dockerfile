@@ -1,7 +1,7 @@
 FROM python:3.12
 
 # Set the working directory in docker
-WORKDIR /app
+WORKDIR /backend
 
 # Copy the current directory contents into the container at /app
 COPY . /app

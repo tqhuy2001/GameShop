@@ -31,6 +31,19 @@ const getGamesBought = async () => {
     return valueReturn
 }
 
+const getGamesLiked = async () => {
+    let valueReturn = []
+    try {
+        const response = await apis.getGamesLiked()
+            response?.data.map(item => (
+                valueReturn = [...valueReturn, item.game_id]
+            ))
+    } catch (error) {
+        valueReturn = []
+    }
+    return valueReturn
+}
+
 export const getExistedLogin = () => async (dispatch) => {
     dispatch({
         type: actionTypes.LOADING
@@ -38,6 +51,8 @@ export const getExistedLogin = () => async (dispatch) => {
     if(localStorage.getItem('token') !== null) {
         const dataUser = await getInfoCurrentUser()
         const gamesBought = await getGamesBought()
+        const gamesLiked = await getGamesLiked()
+
         dispatch({
             type: actionTypes.LOGIN,
             authenticated: true,
@@ -47,6 +62,7 @@ export const getExistedLogin = () => async (dispatch) => {
             type: actionTypes.GET_CURRENT_USER,
             dataUser: dataUser,
             gamesBought: gamesBought,
+            gamesLiked: gamesLiked,
             error: {},
         })            
     }
@@ -60,6 +76,7 @@ export const getExistedLogin = () => async (dispatch) => {
             type: actionTypes.GET_CURRENT_USER,
             dataUser: {},
             gamesBought: [],
+            gamesLiked: [],
             error: {},
         })            
     }

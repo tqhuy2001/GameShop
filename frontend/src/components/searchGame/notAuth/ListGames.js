@@ -1,11 +1,10 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
-import { GameCard } from '..'
+import { default as GameCard } from '../GameCard'
 
 const ListGames = (props) => {
   const data = props.data
-  const gamesBought = props.gamesBought
-  
+
   const [widthwindow, setWidthWindow] = useState(window.innerWidth)
   
   useEffect(() => {
@@ -23,20 +22,20 @@ const ListGames = (props) => {
   else gridItem = 'grid grid-cols-1 gap-2 py-[10px]'
 
   return (
-    <div className='w-full'>
-      {data.length == 0
-        ? (
-          <div className='text-slate-300'>
-            <div>Not found any games</div>
-          </div>)
-        : (
-          <div className={gridItem}>
-            {data.map((item) => (
+    <div className=''>
+      <div className={gridItem}>
+        {data.length === 0
+          ? (
+            <div className='text-slate-300'>
+              <div>Not found any games</div>
+            </div>)
+          : (data.map((item) => (
               <div key={item.id}>
-                {gamesBought.includes(item.id) ? <GameCard data={item} bought={true}/> : <GameCard data={item} bought={false}/>}
-              </div>))}
-          </div>)
-      }
+                <GameCard data={item} bought={false}/>
+              </div>
+            )))
+        }
+        </div>
     </div>
   )
 }
