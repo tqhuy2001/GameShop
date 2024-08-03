@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends, status
 from fastapi import File, UploadFile
 from sqlalchemy.orm import Session
 from sqlalchemy import func
-from typing import Optional, Annotated
+from typing import Annotated
 import os
 import base64
 
@@ -19,12 +19,12 @@ from app.config import settings
 game = APIRouter()
 
 @game.get('/get-all-games', response_model=list[game_schemas.Game])
-def get_all_games(db: Session = Depends(get_db)):
+async def get_all_games(db: Session = Depends(get_db)):
     db_games = db.query(game_models.Game).all()
     return db_games
 
 @game.options('/like/{game_id}', status_code=status.HTTP_200_OK)
-def like_game(game_id: int, db: Session = Depends(get_db), current_user=Depends(oauth2.get_current_user)):
+async def like_game(game_id: int, db: Session = Depends(get_db), current_user=Depends(oauth2.get_current_user)):
     db_game = db.query(game_models.Game).filter(game_models.Game.id == game_id).first()
     if db_game is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Game has not existed')
@@ -41,19 +41,19 @@ def like_game(game_id: int, db: Session = Depends(get_db), current_user=Depends(
         return {'detail': 'Disliked game'}
 
 @game.get('/get-game-id/{game_id}', response_model=game_schemas.Game)
-def get_game_by_id(game_id: int, db: Session = Depends(get_db)):
+async def get_game_by_id(game_id: int, db: Session = Depends(get_db)):
     db_game = db.query(game_models.Game).filter(game_models.Game.id == game_id).first()
     if db_game is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Not found game')
     return db_game
 
 @game.get('/get-images/{game_id}', response_model=list[game_schemas.GameImage])
-def get_images_by_id(game_id: int, db: Session = Depends(get_db)):
+async def get_images_by_id(game_id: int, db: Session = Depends(get_db)):
     db_game = db.query(game_images_models.GameImages).filter(game_images_models.GameImages.game_id == game_id).all()
     return db_game
 
 @game.post('/add', status_code=status.HTTP_201_CREATED)
-def add_game(game: game_schemas.GameIn, db: Session = Depends(get_db), current_user=Depends(oauth2.get_current_user)):
+async def add_game(game: game_schemas.GameIn, db: Session = Depends(get_db), current_user=Depends(oauth2.get_current_user)):
     if current_user.permission != 'Admin' and current_user.permission != 'Staff':
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='You are not permitted')
     db_game = db.query(game_models.Game).filter(game_models.Game.name == game.name).first()
@@ -66,7 +66,7 @@ def add_game(game: game_schemas.GameIn, db: Session = Depends(get_db), current_u
     return {'detail': 'Successfully created game'}
 
 @game.get('/get-categories-id/{game_id}', response_model=list[game_categories_schemas.GameCategoryOut])
-def get_categories_by_gameid(game_id: int, db: Session = Depends(get_db)):
+async def get_categories_by_gameid(game_id: int, db: Session = Depends(get_db)):
     db_game = db.query(game_models.Game).filter(game_models.Game.id == game_id).first()
     if db_game is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Game not found')
@@ -74,7 +74,7 @@ def get_categories_by_gameid(game_id: int, db: Session = Depends(get_db)):
     return db_game
 
 @game.post('/add-category', status_code=status.HTTP_201_CREATED)
-def add_category(game_id: int, category: str, db: Session = Depends(get_db), current_user=Depends(oauth2.get_current_user)):
+async def add_category(game_id: int, category: str, db: Session = Depends(get_db), current_user=Depends(oauth2.get_current_user)):
     if current_user.permission != 'Admin' and current_user.permission != 'Staff':
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='You are not permitted')
     db_game = db.query(game_models.Game).filter(game_models.Game.id == game_id).first()
@@ -90,7 +90,7 @@ def add_category(game_id: int, category: str, db: Session = Depends(get_db), cur
     return {'detail': 'Successfully created category'}
 
 @game.delete('/delete-category/{id}', status_code=status.HTTP_200_OK)
-def delete_category(id: int, db: Session = Depends(get_db), current_user=Depends(oauth2.get_current_user)):
+async def delete_category(id: int, db: Session = Depends(get_db), current_user=Depends(oauth2.get_current_user)):
     if current_user.permission != 'Admin':
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='You are not permitted')
     db_game_category = db.query(game_categories_models.GameCategories).filter(game_categories_models.GameCategories.id == id).first()
@@ -101,7 +101,7 @@ def delete_category(id: int, db: Session = Depends(get_db), current_user=Depends
     return {'detail': 'Successfully deleted category of game'}
 
 @game.put('/update-category/{id}', status_code=status.HTTP_200_OK)
-def update_category(id: int, category: str, db: Session = Depends(get_db),
+async def update_category(id: int, category: str, db: Session = Depends(get_db),
                 current_user=Depends(oauth2.get_current_user)):
     if current_user.permission != 'Admin' and current_user.permission != 'Staff':
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='You are not permitted')
@@ -185,7 +185,7 @@ async def add_images(game_id: int, images: list[UploadFile] = File(...), db: Ses
     return {'detail': 'Successfully add images to game'}
 
 @game.delete('/delete/{game_id}', status_code=status.HTTP_200_OK)
-def delete_game(game_id: int, db: Session = Depends(get_db), current_user=Depends(oauth2.get_current_user)):
+async def delete_game(game_id: int, db: Session = Depends(get_db), current_user=Depends(oauth2.get_current_user)):
     if current_user.permission != 'Admin':
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='You are not permitted')
     db_game = db.query(game_models.Game).filter(game_models.Game.id == game_id).first()
@@ -197,7 +197,7 @@ def delete_game(game_id: int, db: Session = Depends(get_db), current_user=Depend
 
 
 @game.put('/update-game/{game_id}', status_code=status.HTTP_200_OK)
-def update_game(game_id: int, update_game: game_schemas.GameIn, db: Session = Depends(get_db),
+async def update_game(game_id: int, update_game: game_schemas.GameIn, db: Session = Depends(get_db),
                 current_user=Depends(oauth2.get_current_user)):
     if current_user.permission != 'Admin' and current_user.permission != 'Staff':
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='You are not permitted')

@@ -13,7 +13,7 @@ from app.config import settings
 manager = APIRouter()
 
 @manager.post('/add-staff', status_code=status.HTTP_201_CREATED)
-def create_staff(staff: user_schemas.StaffCreate, db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
+async def create_staff(staff: user_schemas.StaffCreate, db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
     if current_user.permission != 'Admin':
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='You are not permitted')
     db_user1 = db.query(user_models.User).filter(user_models.User.username == staff.username).first()
@@ -32,7 +32,7 @@ def create_staff(staff: user_schemas.StaffCreate, db: Session = Depends(get_db),
     return {'detail': 'Successfully created staff user'}
 
 @manager.post('/add-admin', status_code=status.HTTP_201_CREATED)
-def create_admin(admin: user_schemas.AdminCreate, db: Session = Depends(get_db)):
+async def create_admin(admin: user_schemas.AdminCreate, db: Session = Depends(get_db)):
     db_user = db.query(user_models.User).filter(user_models.User.permission == 'Admin').first()
     if db_user:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail='Admin user has already existed')
@@ -46,7 +46,7 @@ def create_admin(admin: user_schemas.AdminCreate, db: Session = Depends(get_db))
     return {'detail': 'Successfully created admin user'}
 
 @manager.delete('/delete-user/{user_id}', status_code=status.HTTP_200_OK)
-def delete_user(user_id: int, db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
+async def delete_user(user_id: int, db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
     if current_user.permission != 'Admin':
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='You are not permitted')
     db_user = db.query(user_models.User).filter(user_models.User.id == id).first()
@@ -57,14 +57,14 @@ def delete_user(user_id: int, db: Session = Depends(get_db), current_user = Depe
     return {'detail': 'Successfully deleted user'}
 
 @manager.get('/get-all-users', response_model=list[user_schemas.UserBase])
-def get_all_users(db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
+async def get_all_users(db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
     if current_user.permission != 'Admin' and current_user.permission != 'Staff':
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='You are not permitted')
     db_users = db.query(user_models.User).all()
     return db_users
 
 @manager.get('/get-user/{user_id}', response_model=user_schemas.UserBase)
-def get_user_by_id(user_id: int, db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
+async def get_user_by_id(user_id: int, db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
     if current_user.permission != 'Admin' and current_user.permission != 'Staff':
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='You are not permitted')
     db_user = db.query(user_models.User).filter(user_models.User.id == user_id).first()
@@ -73,7 +73,7 @@ def get_user_by_id(user_id: int, db: Session = Depends(get_db), current_user = D
     return db_user
 
 @manager.delete('/delete/{buying_id}', status_code=status.HTTP_200_OK)
-def delete_buying(buying_id: int, db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
+async def delete_buying(buying_id: int, db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
     db_buying = db.query(buying_models.Buying).filter(buying_models.Buying.id == buying_id).first()
     if current_user.permission != 'Admin':
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='Only admin can delete buying')
@@ -84,7 +84,7 @@ def delete_buying(buying_id: int, db: Session = Depends(get_db), current_user = 
     return {'detail': 'Successfully deleted buying'}
 
 @manager.get('/get-all-buyings', response_model=list[buying_schemas.Buying])
-def get_all_buyings(db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
+async def get_all_buyings(db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
     if current_user.permission != 'Admin' and current_user.permission != 'Staff':
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='You are not permitted')
     db_games = db.query(buying_models.Buying).all()

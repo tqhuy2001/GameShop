@@ -14,11 +14,11 @@ from app.models import game_like as game_like_models
 user = APIRouter()
 
 @user.get('/get-info', response_model=user_schemas.UserInfo)
-def get_info_user(current_user = Depends(oauth2.get_current_user)):
+async def get_info_user(current_user = Depends(oauth2.get_current_user)):
     return current_user
 
 @user.get('/get-games-liked', response_model=list[game_like_schemas.CustomerLike])
-def get_all_games_liked(db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
+async def get_all_games_liked(db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
     db_games_liked = db.query(game_like_models.GameLike.game_id).filter(
         game_like_models.GameLike.user_id == current_user.id).all()
     return db_games_liked

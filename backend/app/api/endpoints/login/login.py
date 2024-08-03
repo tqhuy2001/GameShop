@@ -10,7 +10,7 @@ from app.models import user as user_models
 login = APIRouter()
 
 @login.post('/login', response_model=token_schemas.Token)
-def user_login(user: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+async def user_login(user: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     db_user = db.query(user_models.User).filter(user_models.User.username == user.username).first()
     if not db_user:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='Account has not existed')

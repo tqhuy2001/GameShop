@@ -24,6 +24,7 @@ fastapi==0.111.0
 fastapi-cli==0.0.4
 fastapi2postman==0.1.2
 fastjsonschema==2.20.0
+gevent==24.2.1
 greenlet==3.0.3
 gunicorn==22.0.0
 h11==0.14.0
@@ -99,5 +100,8 @@ uvloop==0.19.0
 watchfiles==0.22.0
 wcwidth==0.2.13
 webencodings==0.5.1
+websocket==0.2.1
 websockets==12.0
 yarg==0.1.9
+zope.event==5.0
+zope.interface==6.4.post2

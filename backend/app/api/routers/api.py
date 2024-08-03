@@ -7,6 +7,7 @@ from .customer import customer_router
 from .manager import manager_router
 from .login import login_router
 from .user import user_router
+from .game_comments import game_comments_router
 
 routers = APIRouter()
 
@@ -20,3 +21,4 @@ routers.include_router(manager_router)
 routers.include_router(game_router)
 routers.include_router(login_router)
 routers.include_router(user_router)
+routers.include_router(game_comments_router)

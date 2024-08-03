@@ -53,3 +53,36 @@ export const likeGame = (gameId) => new Promise( async (resolve, reject) => {
         reject(error)
     }
 })
+
+export const addComment = (gameId, content) => new Promise( async (resolve, reject) => {
+    const token = localStorage.getItem('token')
+    try {
+        const response = await axios({
+            url: `/game_comments/add-comments/${gameId}`,
+            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            data: content
+        })
+        resolve(response)
+    } catch (error) {
+        reject(error)
+    }
+})
+
+export const getComments = (gameId) => new Promise( async (resolve, reject) => {
+    try {
+        const response = await axios({
+            url: `/game_comments/get-comments/${gameId}`,
+            method: 'get',
+            headers: {
+                'Accept': 'application/json',
+            },
+        })
+        resolve(response)
+    } catch (error) {
+        reject(error)
+    }
+})
