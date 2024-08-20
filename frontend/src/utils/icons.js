@@ -14,8 +14,19 @@ import { FaChevronLeft } from "react-icons/fa";
 import { FaChevronRight } from "react-icons/fa";
 import { BiLike } from "react-icons/bi";
 import { LuMenuSquare } from "react-icons/lu";
+import { AiOutlineProfile } from "react-icons/ai";
+import { MdPayment } from "react-icons/md";
+import { BsCartCheck } from "react-icons/bs";
+import { PiSignOut } from "react-icons/pi";
+import { BsQuestionCircle } from "react-icons/bs";
+import { SiTicktick } from "react-icons/si";
+import { FaCheck } from "react-icons/fa";
+import { GiCancel } from "react-icons/gi";
 
 const icons = {
+    FaCheck,
+    GiCancel,
+    SiTicktick,
     CiSearch,
     GoHome,
     TbCategoryPlus,
@@ -32,6 +43,11 @@ const icons = {
     FaChevronRight,
     BiLike,
     LuMenuSquare,
+    AiOutlineProfile,
+    MdPayment,
+    BsCartCheck,
+    PiSignOut,
+    BsQuestionCircle,
 }
 
 export default icons

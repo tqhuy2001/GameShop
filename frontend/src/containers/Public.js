@@ -1,10 +1,10 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
-import { SideBarLeft, Community } from '../../components/public'
-import { PrivateNavbar } from '../../components/public/auth'
-import { PublicNavbar } from '../../components/public/notAuth'
+import { SideBarLeft, Community } from '../components/public'
+import { PrivateNavbar } from '../components/public/auth'
+import { PublicNavbar } from '../components/public/notAuth'
 import { useState, useEffect } from 'react'
-import styles from '../../mystyle.module.css'
+import styles from '../mystyle.module.css'
 import { useSelector } from 'react-redux'
 
 const Public = () => {
@@ -20,14 +20,14 @@ const Public = () => {
   })
 
   return (
-    <div className='flex flex-col'>
+    <div className='flex flex-col w-full'>
       {authenticated ? <PrivateNavbar /> : <PublicNavbar />}
-      <div className='flex min-h-screen mt-[70px]'>
+      <div className='w-full flex min-h-screen mt-[70px]'>
           <SideBarLeft />
           <div id='outlet' className={`flex w-full ml-[300px] ${widthwindow > 1400 ? styles.outlet_community_appear : styles.outlet_community_fadeout} mt-[20px] mb-[30px]`}>
             <Outlet/>
           </div>
-          <div className={`fixed right-0 mt-[15px] ${widthwindow > 1400 ? styles.community_appear : styles.community_fadeout}`}><Community /></div>
+          <div className={`fixed mt-[20px] ${widthwindow > 1400 ? styles.community_appear : styles.community_fadeout}`}><Community /></div>
       </div>
     </div>
   )

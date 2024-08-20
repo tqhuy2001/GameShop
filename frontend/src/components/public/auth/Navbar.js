@@ -4,38 +4,75 @@ import Search from '../Search'
 import { useDispatch, useSelector } from 'react-redux'
 import * as actions from '../../../stores/actions'
 import icons from '../../../utils/icons'
-
-const buttonHoverStyle = 'hover:bg-slate-300 hover:text-gray-950'
+import { useNavigate } from 'react-router-dom'
+import { Profile } from './Profile'
+import { RechargeCash } from './RechargeCash'
+import { GameBought } from './GameBought'
 
 const Navbar = () => {
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const infoUser = useSelector(state => state.users.currentUser.dataUser)
 
     const LuMenuSquare = icons.LuMenuSquare
     const TbBrandCashapp = icons.TbBrandCashapp
+    const AiOutlineProfile = icons.AiOutlineProfile
+    const MdPayment = icons.MdPayment
+    const BsCartCheck = icons.BsCartCheck
+    const PiSignOut = icons.PiSignOut
 
-    const [menuProfile, setMenuProfile] = useState(false)
+    const [menuNavbar, setMenuNavbar] = useState(false)
+    const [profile, setProfile] = useState(false)
+    const [rechargeCash, setRechargeCash] = useState(false)
+    const [gameBought, setGameBought] = useState(false)
 
     const handleSignOut = () => {
-        handleClickProfile()
+        handleClickMenu()
         dispatch(actions.signOut())
     }
 
-    const handleClickProfile = () => {
-        if(menuProfile) setMenuProfile(false)
-        else setMenuProfile(true)
+    const handleClickMenu = () => {
+        setMenuNavbar(!menuNavbar)
+    }
+
+    const handleClickProfile = (state) => {
+        if(state) handleClickMenu()
+        setProfile(state)
+    }
+    const handleClickRechargeCash = (state) => {
+        if(state) handleClickMenu()
+        setRechargeCash(state)
+    }
+    const handleClickGameBought = (state) => {
+        if(state) handleClickMenu()
+        setGameBought(state)
     }
 
     return (
         <div className='z-40 h-[70px] flex bg-zinc-800 pl-[100px] fixed w-screen select-none'>
-            <div className={`px-[5px] py-[1px] flex flex-col fixed bg-zinc-700 w-[160px] mt-[70px] right-0 text-gray-300 ${menuProfile ? 'block' : 'hidden'}`}>
-                    <div className='py-[3px] cursor-pointer hover:bg-zinc-600' onClick={handleClickProfile}>Profile</div>
-                    <div className='py-[3px] cursor-pointer hover:bg-zinc-600' onClick={handleClickProfile}>Charge cash</div>
-                    <div className='py-[3px] cursor-pointer hover:bg-zinc-600' onClick={handleClickProfile}>Game bought</div>
-                    <div className='py-[3px] cursor-pointer hover:bg-zinc-600' onClick={handleSignOut}>Sign out</div>
+            <div className={`${profile ? 'block' : 'hidden'}`}><Profile cancel={() => handleClickProfile(false)} /></div>
+            <div className={`${rechargeCash ? 'block' : 'hidden'}`}><RechargeCash /></div>
+            <div className={`${gameBought ? 'block' : 'hidden'}`}><GameBought /></div>
+            <div className={`px-[2px] py-[1px] flex flex-col fixed bg-zinc-700 w-[160px] mt-[70px] right-0 text-gray-300 ${menuNavbar ? 'block' : 'hidden'}`}>
+                <div className='py-[3px] cursor-pointer hover:bg-zinc-600 flex items-center' onClick={() => handleClickProfile(true)}>
+                    <span className='mr-[4px]'><AiOutlineProfile size={19}/></span>
+                    Profile
+                </div>
+                <div className='py-[3px] cursor-pointer hover:bg-zinc-600 flex items-center' onClick={() => handleClickRechargeCash(true)}>
+                    <span className='mr-[4px]'><MdPayment size={19}/></span>
+                    Recharge cash
+                </div>
+                <div className='py-[3px] cursor-pointer hover:bg-zinc-600 flex items-center' onClick={() => handleClickGameBought(true)}>
+                    <span className='mr-[4px]'><BsCartCheck size={19}/></span>
+                    Game bought
+                </div>
+                <div className='py-[3px] cursor-pointer hover:bg-zinc-600 flex items-center' onClick={handleSignOut}>
+                    <span className='mr-[4px]'><PiSignOut size={19}/></span>
+                    Sign out
+                </div>
             </div>
             <div className='w-1/6 flex pl-[50px]'>
-                <a className='flex w-[140px] justify-center items-center' href='/'>
+                <a className='flex w-[140px] justify-center items-center cursor-pointer' onClick={() => navigate('/')}>
                     <img className='w-[100px] h-[60px]' src={logoPath} alt='logo' />
                 </a>
             </div>
@@ -59,7 +96,7 @@ const Navbar = () => {
                     </div>
                     <div
                         className='text-gray-400 cursor-pointer ml-[20px] flex items-center hover:text-zinc-500'
-                        onClick={handleClickProfile}>
+                        onClick={handleClickMenu}>
                         <LuMenuSquare size={35}/>
                     </div>
                 </div>

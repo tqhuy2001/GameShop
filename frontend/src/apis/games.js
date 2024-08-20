@@ -37,7 +37,7 @@ export const getGameCategories = (gameId) => new Promise( async (resolve, reject
 })
 
 export const likeGame = (gameId) => new Promise( async (resolve, reject) => {
-    const token = localStorage.getItem('token')
+    const token = sessionStorage.getItem('token')
     try {
         const response = await axios({
             url: `/game/like/${gameId}`,
@@ -55,7 +55,7 @@ export const likeGame = (gameId) => new Promise( async (resolve, reject) => {
 })
 
 export const addComment = (gameId, content) => new Promise( async (resolve, reject) => {
-    const token = localStorage.getItem('token')
+    const token = sessionStorage.getItem('token')
     try {
         const response = await axios({
             url: `/game_comments/add-comments/${gameId}`,
@@ -76,6 +76,21 @@ export const getComments = (gameId) => new Promise( async (resolve, reject) => {
     try {
         const response = await axios({
             url: `/game_comments/get-comments/${gameId}`,
+            method: 'get',
+            headers: {
+                'Accept': 'application/json',
+            },
+        })
+        resolve(response)
+    } catch (error) {
+        reject(error)
+    }
+})
+
+export const getAllComments = () => new Promise( async (resolve, reject) => {
+    try {
+        const response = await axios({
+            url: `/game_comments/get-all-comments`,
             method: 'get',
             headers: {
                 'Accept': 'application/json',

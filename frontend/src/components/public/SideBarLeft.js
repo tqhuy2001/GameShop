@@ -14,7 +14,7 @@ const FaInstagramSquare = icons.FaInstagramSquare
 const SideBarLeft = () => {
 
   return (
-    <div className='fixed top-[70px] border-r-[1px] border-gray-500 text-gray-300 flex flex-col w-[275px] h-screen justify-between'>
+    <div className='fixed top-[70px] border-r-[1px] border-gray-500 text-gray-300 flex flex-col w-[275px] h-screen justify-between overscroll-none'>
         <div className='mt-[8px] flex flex-col select-none'>
             {menuSideBarLeft.map((item, index) => (
                 <NavLink

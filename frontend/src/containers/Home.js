@@ -1,5 +1,5 @@
 import React from 'react'
-import { NewUpdateGames, Banner } from '../../components/home'
+import { NewUpdateGames, Banner } from '../components/home'
 
 const Home = () => {
 

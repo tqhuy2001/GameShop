@@ -48,7 +48,9 @@ export const getExistedLogin = () => async (dispatch) => {
     dispatch({
         type: actionTypes.LOADING
     })
-    if(localStorage.getItem('token') !== null) {
+    if(localStorage.getItem('token')) sessionStorage.setItem('token', localStorage.getItem('token'))
+
+    if(sessionStorage.getItem('token')) {
         const dataUser = await getInfoCurrentUser()
         const gamesBought = await getGamesBought()
         const gamesLiked = await getGamesLiked()
@@ -89,7 +91,8 @@ export const signOut = () => (dispatch) => {
     dispatch({
         type: actionTypes.LOADING
     })
-    localStorage.removeItem('token')
+    if(localStorage.getItem('token')) localStorage.removeItem('token')
+    sessionStorage.removeItem('token')
     dispatch({
         type: actionTypes.SIGN_OUT,
     })
@@ -98,15 +101,22 @@ export const signOut = () => (dispatch) => {
     })
 }
 
-export const login = (data) => async (dispatch) => {
+export const login = (data, isRemembered) => async (dispatch) => {
     dispatch({
         type: actionTypes.LOADING
     })
     try {
         const responseLogin = await apis.login(data)
-        localStorage.setItem('token', responseLogin.data.access_token)
+
+        if(isRemembered) {
+            localStorage.setItem('token', responseLogin.data.access_token)
+            sessionStorage.setItem('token', responseLogin.data.access_token)
+        }
+        else sessionStorage.setItem('token', responseLogin.data.access_token)
+
         const dataUser = await getInfoCurrentUser()
         const gamesBought = await getGamesBought()
+
         dispatch({
             type: actionTypes.LOGIN,
             authenticated: true,

@@ -1,4 +1,5 @@
-import { Home, Login, Public, SignUp, SearchGame, PublicGameDetail, Contact } from './containers/notAuth'
+import { PublicGameDetail } from './containers/notAuth'
+import { Contact, Home, Login, Public, SignUp, SearchGame } from './containers'
 import { PrivateGameDetail } from './containers/auth'
 import { Routes, Route } from "react-router-dom";
 import * as actions from './stores/actions'
@@ -23,11 +24,11 @@ function App() {
     function handleData() {
       dispatch(actions.getAllGames())
     }
-    setInterval(handleData, 1000 * 60 * 60)
+    handleData()
   }, [])
-
+  
   return (
-    <div className='bg-zinc-950 min-h-screen w-screen'>
+    <div className='bg-zinc-950 min-h-screen'>
       {loading ? <Loading/> : null}
       <Routes>
         <Route path={path.public} element={<Public />}>

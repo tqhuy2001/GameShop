@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import path from '../../utils/path'
+import path from '../utils/path'
 import { useNavigate } from 'react-router-dom'
-import * as apis from '../../apis'
+import * as apis from '../apis'
 import { useSelector } from 'react-redux'
 
 const SignUp = () => {
@@ -130,7 +130,7 @@ const SignUp = () => {
   return (
     <div className='flex w-full justify-center'>
       <div className={`left-0 top-[70px] flex w-screen h-screen fixed bg-black bg-opacity-50 justify-center ${reportSuccess ? 'block' : 'hidden'}`}>
-        <div className={`flex flex-col bg-zinc-700 w-[400px] border-2 border-gray-300 rounded-2xl h-[300px] items-center mt-[100px] text-gray-300`}>
+        <div className={`flex flex-col bg-zinc-900 w-[400px] border-2 border-gray-300 rounded-2xl h-[300px] items-center mt-[100px] text-gray-300`}>
           <div className='flex w-full text-white justify-end'>
             <button 
               className='mr-[10px] mt-[5px] text-[18px] font-bold'
@@ -156,13 +156,13 @@ const SignUp = () => {
       </div>
       {authenticated ? null : 
       <div className='w-full flex justify-center mt-[25px]'>
-        <div className={`flex flex-col bg-zinc-700 w-3/4 border-2 border-gray-300 rounded-2xl h-[750px] items-center py-[35px] px-[80px] text-gray-300`}>
+        <div className={`flex flex-col bg-zinc-900 w-3/4 border border-gray-500 rounded-2xl h-[750px] items-center py-[35px] px-[80px] text-gray-300`}>
           <div className='text-[30px] font-bold'>SIGN UP</div>
           <div className='flex flex-col w-full text-gray-300 text-[19px] mt-[50px]'>
             <div className='flex flex-col h-[110px]'>
               Username
               <input 
-                className={`placeholder-gray-500 rounded-xl border ${usernameFocus ? 'border-gray-200' : 'border-gray-500'} bg-zinc-700 h-[40px] px-[15px] outline-none text-gray-300 text-[17px] mt-[8px]`} 
+                className={`placeholder-gray-500 rounded-xl border ${usernameFocus ? 'border-gray-200' : 'border-gray-500'} bg-zinc-900 h-[40px] px-[15px] outline-none text-gray-300 text-[17px] mt-[8px]`} 
                 type='text' 
                 placeholder='Username'
                 onFocus={() => handleFocus('username')}
@@ -177,7 +177,7 @@ const SignUp = () => {
             <div className='flex flex-col h-[110px]'>
               Email
               <input 
-                className={`placeholder-gray-500 rounded-xl border ${emailFocus ? 'border-gray-200' : 'border-gray-500'} bg-zinc-700 h-[40px] px-[15px] outline-none text-gray-300 text-[17px] mt-[8px]`} 
+                className={`placeholder-gray-500 rounded-xl border ${emailFocus ? 'border-gray-200' : 'border-gray-500'} bg-zinc-900 h-[40px] px-[15px] outline-none text-gray-300 text-[17px] mt-[8px]`} 
                 type='text' 
                 placeholder='Email'
                 onFocus={() => handleFocus('email')}
@@ -192,7 +192,7 @@ const SignUp = () => {
             <div className='flex flex-col h-[110px]'>
               Password
               <input 
-                className={`placeholder-gray-500 rounded-xl border ${pwdFocus ? 'border-gray-200' : 'border-gray-500'} bg-zinc-700 h-[40px] px-[15px] outline-none text-gray-300 text-[17px] mt-[8px]`} 
+                className={`placeholder-gray-500 rounded-xl border ${pwdFocus ? 'border-gray-200' : 'border-gray-500'} bg-zinc-900 h-[40px] px-[15px] outline-none text-gray-300 text-[17px] mt-[8px]`} 
                 type='password' 
                 placeholder='Password'
                 onFocus={() => handleFocus('pwd')}
@@ -204,10 +204,10 @@ const SignUp = () => {
                 Cannot be left blank
               </div>
             </div>
-            <div className='flex flex-col h-[130px]'>
+            <div className='flex flex-col h-[125px]'>
               Confirm Password
               <input 
-                className={`placeholder-gray-500 rounded-xl border ${cfPwdFocus ? 'border-gray-200' : 'border-gray-500'} bg-zinc-700 h-[40px] px-[15px] outline-none text-gray-300 text-[17px] mt-[8px]`} 
+                className={`placeholder-gray-500 rounded-xl border ${cfPwdFocus ? 'border-gray-200' : 'border-gray-500'} bg-zinc-900 h-[40px] px-[15px] outline-none text-gray-300 text-[17px] mt-[8px]`} 
                 type='password' 
                 placeholder='Confirm Password'
                 onFocus={() => handleFocus('cfPwd')}
@@ -225,7 +225,7 @@ const SignUp = () => {
             
           </div>
             <button
-              className='flex text-[20px] mt-[25px] w-[200px] h-[40px] border border-gray-300 bg-zinc-600 rounded-lg text-gray-300 font-bold tracking-wider items-center justify-center hover:bg-gray-400 hover:text-gray-950'
+              className='flex text-[20px] mt-[25px] w-[200px] h-[40px] border border-gray-300 bg-zinc-800 hover:bg-opacity-70 rounded-lg text-gray-300 font-bold tracking-wider items-center justify-center'
               onClick={handleSubmit}
             >SUBMIT</button>
             <div className='text-gray-300 text-[15px] mt-[20px]'>

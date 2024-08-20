@@ -1,7 +1,1 @@
-export { default as Home } from './Home'
-export { default as Login } from './Login'
-export { default as Public } from './Public'
-export { default as SignUp } from './SignUp'
-export { default as SearchGame } from './SearchGame'
 export { default as PublicGameDetail } from './GameDetail'
-export { default as Contact } from './Contact'

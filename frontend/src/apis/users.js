@@ -35,7 +35,7 @@ export const login = (data) => new Promise( async (resolve, reject) => {
 })
 
 export const getInfoCurrentUser = () => new Promise( async (resolve, reject) => {
-    const token = localStorage.getItem('token')
+    const token = sessionStorage.getItem('token')
     try {
         const response = await axios({
             url: '/user/get-info',
@@ -52,7 +52,7 @@ export const getInfoCurrentUser = () => new Promise( async (resolve, reject) => 
 })
 
 export const getGamesBought = () => new Promise( async (resolve, reject) => {
-    const token = localStorage.getItem('token')
+    const token = sessionStorage.getItem('token')
     try {
         const response = await axios({
             url: '/customer/get-games-bought',
@@ -69,11 +69,28 @@ export const getGamesBought = () => new Promise( async (resolve, reject) => {
 })
 
 export const getGamesLiked = () => new Promise( async (resolve, reject) => {
-    const token = localStorage.getItem('token')
+    const token = sessionStorage.getItem('token')
     try {
         const response = await axios({
             url: '/user/get-games-liked',
             method: 'get',
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${token}`, 
+            },
+        })
+        resolve(response)
+    } catch (error) {
+        reject(error)
+    }
+})
+
+export const buyGame = (gameId) => new Promise( async (resolve, reject) => {
+    const token = sessionStorage.getItem('token')
+    try {
+        const response = await axios({
+            url: `/customer/add-buying/${gameId}`,
+            method: 'post',
             headers: {
                 'Accept': 'application/json',
                 'Authorization': `Bearer ${token}`, 

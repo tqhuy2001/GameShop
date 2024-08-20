@@ -14,6 +14,7 @@ const Search = () => {
   const [displayList, setDisplayList] = useState(false)
   const [list, setList] = useState([])
   const navigate = useNavigate()
+  const [searchItems, setSearchItems] = useState(5)
 
   const handleClickGame = (gameId) => {
     const inputElements = document.getElementById('input')
@@ -39,11 +40,8 @@ const Search = () => {
             setList(prev => [...prev, item])
           }
           if(!nameUp.includes(wordUp) && list.includes(item)) setList(prev => prev.filter(e => e !== item))
-        }
-        
-      })
+        }})
     }
-
     addToList()
     if(searchWord.length >= charMin && !displayList) setDisplayList(true)
     if(searchWord.length < charMin && displayList) setDisplayList(false)
@@ -54,6 +52,11 @@ const Search = () => {
       setDisplayList(false)
     }
   }
+
+  const handleClickMore = () => {
+    searchItems + 5 < list.length ? setSearchItems(searchItems + 5) : setSearchItems(list.length)
+  }
+
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside)
     return () => {
@@ -75,11 +78,11 @@ const Search = () => {
           onFocus={handleFocus}
           placeholder='Search game...'>
         </input>
-        <div ref={inputRef} className={`flex flex-col px-[5px] pb-[5px] pt-[25px] top-[20px] w-full rounded-b-lg absolute bg-gray-300 border-b-2 border-l-2 border-r-2 border-gray-600 ${displayList ? 'block' : 'hidden'}`}>
-            {list.map((item, index) => (index < 5 ? (
+        <div ref={inputRef} className={`overflow-scroll max-h-[300px] flex flex-col px-[5px] pt-[25px] top-[20px] w-full rounded-b-lg absolute bg-gray-300 border-b-2 border-l-2 border-r-2 border-gray-600 ${displayList ? 'block' : 'hidden'}`}>
+            {list.map((item, index) => (index < searchItems ? (
               <div 
                 key={index}
-                className='flex hover:bg-zinc-400 cursor-pointer px-[3px] py-[2px] items-center mb-[3px] overflow-hidden'
+                className='flex hover:bg-zinc-400 cursor-pointer px-[3px] py-[2px] items-center mb-[3px]'
                 onClick={() => handleClickGame(item.id)}>
                   <img className='w-[50px] h-[40px] mr-[5px]' src={`${process.env.REACT_APP_SERVER_URL}${process.env.REACT_APP_GET_IMAGE}${item?.main_image}`}/>
                   <div className='w-full flex flex-col'>
@@ -88,9 +91,11 @@ const Search = () => {
                   </div>
               </div>
             ) : null))}
-            <div className='flex text-gray-600 hover:underline cursor-pointer justify-center text-[15px]'>
-              Search more...
-            </div>
+            {list.length === 0 ? <div className='w-full flex justify-center italic text-[15px] text-gray-500'>No result matches to search</div> : null}
+            <div 
+              className={`flex text-gray-600 hover:underline cursor-pointer justify-center text-[15px] ${searchItems >= list.length ? 'hidden' : 'block'}`}
+              onClick={handleClickMore}
+            >More...</div>
         </div>
     </div>
   )
