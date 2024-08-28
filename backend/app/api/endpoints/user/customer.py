@@ -14,7 +14,7 @@ from app.config import settings
 customer = APIRouter()
 
 @customer.post('/add', status_code=status.HTTP_201_CREATED)
-async def create_customer(user: user_schemas.CustomerCreate, db: Session = Depends(get_db)):
+async def create_customer(user: user_schemas.UserCreate, db: Session = Depends(get_db)):
     db_user1 = db.query(user_models.User).filter(user_models.User.username == user.username).first()
     db_user2 = db.query(user_models.User).filter(user_models.User.email == user.email).first()
     if db_user1:
@@ -40,15 +40,13 @@ async def recharge_cash(cash: int, db: Session = Depends(get_db), current_user =
 
 @customer.get('/get-games-bought', response_model=list[buying_schemas.CustomerBought])
 async def get_all_games_bought(db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
-    if current_user.permission != 'Customer':
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='You are not customer')
     db_games = db.query(buying_models.Buying.game_id).filter(buying_models.Buying.user_id == current_user.id).all()
     return db_games
 
 @customer.post('/add-buying/{game_id}', status_code=status.HTTP_200_OK)
 async def buy_game(game_id: int, db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
     if current_user.permission != 'Customer':
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='Only the customers can buy game')
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='Only customers can buy game')
     db_game = db.query(game_models.Game).filter(game_models.Game.id == game_id).first()
     if db_game is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Not found game')

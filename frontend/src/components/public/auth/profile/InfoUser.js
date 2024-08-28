@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux'
 const InfoUser = ({ cancel }) => {
 
   const currentUser = useSelector(state => state.users.currentUser)
-  console.log(currentUser)
 
   return (
     <div className='flex flex-col w-full h-full'>
@@ -17,7 +16,7 @@ const InfoUser = ({ cancel }) => {
               <div className='ml-[10px] text-[20px] flex font-bold'>Cash</div>
               <div className='ml-[10px] text-[20px] flex font-bold'>Account type</div>
               <div className='ml-[10px] text-[20px] flex font-bold'>Games Bought</div>
-              <div className='ml-[10px] text-[20px] flex font-bold'>Create At</div>
+              <div className='ml-[10px] text-[20px] flex font-bold'>Created At</div>
             </div>
             <div className='ml-[10px] flex flex-col gap-[10px]'>
               <div className='ml-[5px] text-green-500 text-[20px]'>{currentUser.dataUser.username}</div>
@@ -29,10 +28,13 @@ const InfoUser = ({ cancel }) => {
             </div>
           </div>
         </div>
-        <button 
-          className='w-[100px] h-[30px] border border-gray-500 hover:bg-white hover:bg-opacity-5 ml-[80%] rounded-md mb-[10px]'
-          onClick={cancel}
-        >Cancel</button>
+        <div className='flex w-full justify-end px-[10px] pb-[10px]'>
+          <button 
+            className='w-[100px] h-[30px] border border-gray-500 hover:bg-white hover:bg-opacity-5 rounded-md'
+            onClick={cancel}
+          >Cancel</button>
+        </div>
+        
     </div>
   )
 }

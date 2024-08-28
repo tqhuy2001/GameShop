@@ -22,8 +22,14 @@ import { BsQuestionCircle } from "react-icons/bs";
 import { SiTicktick } from "react-icons/si";
 import { FaCheck } from "react-icons/fa";
 import { GiCancel } from "react-icons/gi";
+import { GoEye } from "react-icons/go";
+import { FaImages } from "react-icons/fa";
+import { GoEyeClosed } from "react-icons/go";
 
 const icons = {
+    GoEye,
+    GoEyeClosed,
+    FaImages,
     FaCheck,
     GiCancel,
     SiTicktick,

@@ -17,7 +17,7 @@ const Community = () => {
 
   useEffect(() => {
     getComments()
-    const interval = setInterval(() => getComments(), 10000)
+    const interval = setInterval(() => getComments(), 10000 * 6)
     return () => clearInterval(interval)
   }, [])
 

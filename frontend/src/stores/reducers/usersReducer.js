@@ -6,6 +6,7 @@ const initState = {
         error: null,
     },
     currentUser: {
+        wsUser: null,
         dataUser: null,
         gamesBought: null,
         gamesLiked: null,
@@ -27,6 +28,7 @@ const usersReducer = (state = initState, action) => {
             return {
                 ...state,
                 currentUser: {
+                    wsUser: action.wsUser,
                     dataUser: action.dataUser,
                     gamesBought: action.gamesBought,
                     gamesLiked: action.gamesLiked,
@@ -41,6 +43,7 @@ const usersReducer = (state = initState, action) => {
                     error: {},
                 },
                 currentUser: {
+                    wsUser: null,
                     dataUser: {},
                     gamesBought: [],
                     error: {},

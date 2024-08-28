@@ -2,17 +2,7 @@ from datetime import datetime
 
 from pydantic import BaseModel
 
-class CustomerCreate(BaseModel):
-    username: str
-    email: str
-    password: str
-
-class StaffCreate(BaseModel):
-    username: str
-    email: str
-    password: str
-
-class AdminCreate(BaseModel):
+class UserCreate(BaseModel):
     username: str
     email: str
     password: str
@@ -45,3 +35,7 @@ class UserInfo(BaseModel):
 
     class Config:
         from_attributes = True
+
+class ChangePassword(BaseModel):
+    current_password: str
+    new_password: str

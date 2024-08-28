@@ -73,13 +73,13 @@ export const BuyGame = ({ currentUser, gameId, currentGame }) => {
                 </div>
             </div>
             <div className={`fixed top-0 left-0 w-screen h-screen flex justify-center items-center z-50 bg-black bg-opacity-40 ${failedReport ? 'block' : 'hidden'}`}>
-                <div className='relative w-1/3 h-1/3 bg-zinc-900 rounded-xl border border-gray-500 flex flex-col px-[8px] py-[13px] text-gray-300 justify-between items-center'>
+                <div className='relative w-1/3 h-1/3 bg-zinc-900 rounded-xl border border-gray-500 flex flex-col py-[10px] text-gray-300 justify-between items-center'>
                     <div className='flex flex-col items-center w-full'>
-                        <div className='mt-[10px] font-bold text-[20px]'>{detailError.substring(0, detailError.indexOf('.'))}</div>
-                        <div className='mb-[25px] font-bold text-[20px]'>{detailError.substring(detailError.indexOf('.') + 2, detailError.length)}</div>
-                        <span className='text-red-500'><GiCancel size={50}/></span>
+                        <div className='mt-[5px] font-bold text-[20px]'>{detailError.substring(0, detailError.indexOf('.'))}</div>
+                        <div className='font-bold text-[20px]'>{detailError.includes('.') ? detailError.substring(detailError.indexOf('.') + 2, detailError.length) : detailError}</div>
                     </div>
-                    <div className='w-full flex gap-[120px] justify-center'>
+                    <span className='text-red-500'><GiCancel size={50}/></span>
+                    <div className='w-full flex justify-center'>
                         <button 
                             onClick={() => setFailedReport(false)}
                             className='text-gray-300 flex justify-center items-center w-[100px] h-[30px] border border-gray-600 rounded-lg font-bold text-[17px] bg-blue-700 hover:bg-opacity-70'

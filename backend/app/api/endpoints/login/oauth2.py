@@ -5,6 +5,7 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
+from app.core.database import SessionLocal
 
 from app.schemas import token as token_schemas
 from app.core.dependencies import get_db
@@ -56,3 +57,20 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
 
     return db_user
 
+def get_current_user_by_token(token: str):
+    db: Session = SessionLocal()
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
+
+        id: str = payload.get('id')
+
+        if id is None:
+            return None
+
+        token_data = token_schemas.TokenData(id=id)
+        db_user = db.query(user.User).filter(user.User.id == token_data.id).first()
+        db.close()
+    except InvalidTokenError:
+        return None
+
+    return db_user

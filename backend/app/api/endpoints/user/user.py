@@ -40,3 +40,15 @@ async def upload_avatar(db: Session = Depends(get_db), file: UploadFile = File(.
     db_user.avatar = db_avt
     db.commit()
     return {'detail': 'Successfully updated avatar'}
+
+@user.patch('/change-password', status_code=status.HTTP_200_OK)
+async def change_password(form_password: user_schemas.ChangePassword, db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
+    if not oauth2.verify(form_password.current_password, current_user.password):
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail='Incorrect password!')
+    if form_password.current_password == form_password.new_password:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail='New password must not be the same as old password!')
+    db_user = db.query(user_models.User).filter(user_models.User.id == current_user.id).first()
+    new_hash_pwd = oauth2.hash(form_password.new_password)
+    db_user.password = new_hash_pwd
+    db.commit()
+    return {'detail': 'Successfully change password'}

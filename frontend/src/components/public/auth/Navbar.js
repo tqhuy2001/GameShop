@@ -12,7 +12,7 @@ import { GameBought } from './GameBought'
 const Navbar = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const infoUser = useSelector(state => state.users.currentUser.dataUser)
+    const currentUser = useSelector(state => state.users.currentUser)
 
     const LuMenuSquare = icons.LuMenuSquare
     const TbBrandCashapp = icons.TbBrandCashapp
@@ -28,6 +28,7 @@ const Navbar = () => {
 
     const handleSignOut = () => {
         handleClickMenu()
+        currentUser.wsUser?.close()
         dispatch(actions.signOut())
     }
 
@@ -47,13 +48,13 @@ const Navbar = () => {
         if(state) handleClickMenu()
         setGameBought(state)
     }
-
+    
     return (
         <div className='z-40 h-[70px] flex bg-zinc-800 pl-[100px] fixed w-screen select-none'>
-            <div className={`${profile ? 'block' : 'hidden'}`}><Profile cancel={() => handleClickProfile(false)} /></div>
-            <div className={`${rechargeCash ? 'block' : 'hidden'}`}><RechargeCash /></div>
-            <div className={`${gameBought ? 'block' : 'hidden'}`}><GameBought /></div>
-            <div className={`px-[2px] py-[1px] flex flex-col fixed bg-zinc-700 w-[160px] mt-[70px] right-0 text-gray-300 ${menuNavbar ? 'block' : 'hidden'}`}>
+            <div>{profile && <Profile cancel={() => handleClickProfile(false)} />}</div>
+            <div>{rechargeCash && <RechargeCash cancel={() => handleClickRechargeCash(false)} />}</div>
+            <div>{gameBought && <GameBought cancel={() => handleClickGameBought(false)} />}</div>
+            {menuNavbar && <div className={`px-[2px] py-[1px] flex flex-col fixed bg-zinc-700 w-[160px] mt-[70px] right-0 text-gray-300`}>
                 <div className='py-[3px] cursor-pointer hover:bg-zinc-600 flex items-center' onClick={() => handleClickProfile(true)}>
                     <span className='mr-[4px]'><AiOutlineProfile size={19}/></span>
                     Profile
@@ -64,14 +65,14 @@ const Navbar = () => {
                 </div>
                 <div className='py-[3px] cursor-pointer hover:bg-zinc-600 flex items-center' onClick={() => handleClickGameBought(true)}>
                     <span className='mr-[4px]'><BsCartCheck size={19}/></span>
-                    Game bought
+                    Games bought
                 </div>
                 <div className='py-[3px] cursor-pointer hover:bg-zinc-600 flex items-center' onClick={handleSignOut}>
                     <span className='mr-[4px]'><PiSignOut size={19}/></span>
                     Sign out
                 </div>
-            </div>
-            <div className='w-1/6 flex pl-[50px]'>
+            </div>}
+            <div className='w-1/6 flex'>
                 <a className='flex w-[140px] justify-center items-center cursor-pointer' onClick={() => navigate('/')}>
                     <img className='w-[100px] h-[60px]' src={logoPath} alt='logo' />
                 </a>
@@ -84,14 +85,14 @@ const Navbar = () => {
                     <div
                         className='flex select-none items-center'>
                             <div className='flex flex-col'>
-                                <div className='text-green-500 flex justify-end'>{infoUser.username}</div>
+                                <div className='text-green-500 flex justify-end'>{currentUser.dataUser.username}</div>
                                 <div className='flex items-center justify-end gap-[1px] text-yellow-600'>
                                     <TbBrandCashapp />
-                                    {infoUser.cash}
+                                    {currentUser.dataUser.cash}
                                 </div>
                             </div>
                             <div className='ml-[10px] w-[55px] h-[50px]'>
-                                <img className='rounded-full w-full h-full' src={`${process.env.REACT_APP_SERVER_URL}${process.env.REACT_APP_GET_IMAGE}${infoUser.avatar}`} alt='avatar' />
+                                <img className='rounded-full w-full h-full' src={`${process.env.REACT_APP_SERVER_URL}${process.env.REACT_APP_GET_IMAGE}${currentUser.dataUser.avatar}`} alt='avatar' />
                             </div>
                     </div>
                     <div

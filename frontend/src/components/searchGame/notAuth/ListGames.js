@@ -24,12 +24,12 @@ const ListGames = (props) => {
   return (
     <div className=''>
       <div className={gridItem}>
-        {data.length === 0
+        {data?.length === 0
           ? (
             <div className='text-slate-300'>
               <div>Not found any games</div>
             </div>)
-          : (data.map((item) => (
+          : (data?.map((item) => (
               <div key={item.id}>
                 <GameCard data={item} bought={false}/>
               </div>

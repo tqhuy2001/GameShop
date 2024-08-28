@@ -10,7 +10,7 @@ const Navbar = () => {
   const navigate = useNavigate()
   return (
     <div className='z-40 h-[70px] flex bg-zinc-800 pl-[100px] fixed w-screen select-none'>
-      <div className='w-1/6 flex pl-[50px]'>
+      <div className='w-1/6 flex'>
         <a className='flex w-[140px] justify-center items-center cursor-pointer' onClick={() => navigate('/')}>
             <img className='w-[100px] h-[60px]' src={logoPath} alt='logo' />
         </a>
@@ -19,7 +19,7 @@ const Navbar = () => {
         <Search />
       </div>
       <div className='w-1/3 flex items-center justify-center'>
-        <div className='pl-[60px] flex'>
+        <div className='pl-[150px] flex'>
           <NavLink
             to={path.log_in}
             className={`flex w-[100px] h-[32px] border border-slate-300 rounded-lg text-slate-300 font-bold tracking-wider items-center justify-center ${buttonHoverStyle}`}

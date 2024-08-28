@@ -22,7 +22,7 @@ const Public = () => {
   return (
     <div className='flex flex-col w-full'>
       {authenticated ? <PrivateNavbar /> : <PublicNavbar />}
-      <div className='w-full flex min-h-screen mt-[70px]'>
+      <div className='w-full flex mt-[70px]'>
           <SideBarLeft />
           <div id='outlet' className={`flex w-full ml-[300px] ${widthwindow > 1400 ? styles.outlet_community_appear : styles.outlet_community_fadeout} mt-[20px] mb-[30px]`}>
             <Outlet/>

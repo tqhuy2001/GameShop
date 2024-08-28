@@ -78,7 +78,7 @@ const Search = () => {
           onFocus={handleFocus}
           placeholder='Search game...'>
         </input>
-        <div ref={inputRef} className={`overflow-scroll max-h-[300px] flex flex-col px-[5px] pt-[25px] top-[20px] w-full rounded-b-lg absolute bg-gray-300 border-b-2 border-l-2 border-r-2 border-gray-600 ${displayList ? 'block' : 'hidden'}`}>
+        <div ref={inputRef} className={`overflow-y-scroll max-h-[300px] flex flex-col px-[5px] pt-[25px] top-[20px] w-full rounded-b-lg absolute bg-gray-300 border-b-2 border-l-2 border-r-2 border-gray-600 ${displayList ? 'block' : 'hidden'}`}>
             {list.map((item, index) => (index < searchItems ? (
               <div 
                 key={index}

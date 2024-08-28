@@ -13,7 +13,7 @@ from app.config import settings
 manager = APIRouter()
 
 @manager.post('/add-staff', status_code=status.HTTP_201_CREATED)
-async def create_staff(staff: user_schemas.StaffCreate, db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
+async def create_staff(staff: user_schemas.UserCreate, db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
     if current_user.permission != 'Admin':
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='You are not permitted')
     db_user1 = db.query(user_models.User).filter(user_models.User.username == staff.username).first()
@@ -32,7 +32,7 @@ async def create_staff(staff: user_schemas.StaffCreate, db: Session = Depends(ge
     return {'detail': 'Successfully created staff user'}
 
 @manager.post('/add-admin', status_code=status.HTTP_201_CREATED)
-async def create_admin(admin: user_schemas.AdminCreate, db: Session = Depends(get_db)):
+async def create_admin(admin: user_schemas.UserCreate, db: Session = Depends(get_db)):
     db_user = db.query(user_models.User).filter(user_models.User.permission == 'Admin').first()
     if db_user:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail='Admin user has already existed')

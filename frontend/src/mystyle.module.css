@@ -25,3 +25,8 @@
     margin-right: 25px;
     transition: margin-right 0.3s ease-in-out
 }
+
+.no_drag{
+    -webkit-user-drag: none;
+    -moz-user-drag: none;
+}

@@ -101,3 +101,40 @@ export const buyGame = (gameId) => new Promise( async (resolve, reject) => {
         reject(error)
     }
 })
+
+export const updateAvatar = (file) => new Promise( async (resolve, reject) => {
+    const token = sessionStorage.getItem('token')
+    const formData = new FormData()
+    formData.append('file', file)
+    try {
+        const response = await axios.post('user/update-avatar', formData, {
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+        resolve(response)
+    } catch(error) {
+        reject(error)
+    }
+})
+
+export const changePassword = (data) => new Promise( async (resolve, reject) => {
+    const token = sessionStorage.getItem('token')
+    try {
+        const response = await axios({
+            url: `/user/change-password`,
+            method: 'patch',
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            data,
+        })
+        resolve(response)
+    } catch (error) {
+        reject(error)
+    }
+})

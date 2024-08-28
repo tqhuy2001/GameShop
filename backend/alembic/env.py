@@ -12,6 +12,7 @@ from app.models import game_images as game_images_models
 from app.models import game_categories as game_categories_models
 from app.models import game_like as game_like_models
 from app.models import game_comments as game_comments_models
+from app.models import contact_chat as contact_chat_models
 
 from app.config import settings
 
@@ -42,7 +43,8 @@ target_metadata = combine_metadata(
     game_images_models.Base.metadata,
     game_categories_models.Base.metadata,
     game_like_models.Base.metadata,
-    game_comments_models.Base.metadata
+    game_comments_models.Base.metadata,
+    contact_chat_models.Base.metadata
 )
 
 # other values from the config, defined by the needs of env.py,
