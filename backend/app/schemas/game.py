@@ -6,6 +6,7 @@ class GameIn(BaseModel):
     price: int
     description: str
     main_category: str
+    download_link: str
 
 class GameImage(BaseModel):
     image: str
@@ -25,4 +26,5 @@ class Game(BaseModel):
 
     class Config:
         from_attributes = True
+
 

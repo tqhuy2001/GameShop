@@ -33,7 +33,7 @@ const ListGames = (props) => {
           <div className={gridItem}>
             {data?.map((item) => (
               <div key={item.id}>
-                {gamesBought.includes(item.id) ? <GameCard data={item} bought={true}/> : <GameCard data={item} bought={false}/>}
+                {gamesBought.includes(gamesBought.find(e => e.game_id === item.id)) ? <GameCard data={item} bought={true}/> : <GameCard data={item} bought={false}/>}
               </div>))}
           </div>)
       }

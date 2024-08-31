@@ -23,7 +23,7 @@ const getGamesBought = async () => {
     try {
         const response = await apis.getGamesBought()
             response?.data.map(item => (
-                valueReturn = [...valueReturn, item.game_id]
+                valueReturn = [...valueReturn, {game_id: item.game_id, name: item.name, download_link: item.download_link, bought_at: item.bought_at}]
             ))
     } catch (error) {
         valueReturn = []

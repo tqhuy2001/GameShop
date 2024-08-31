@@ -50,7 +50,7 @@ const Navbar = () => {
     }
     
     return (
-        <div className='z-40 h-[70px] flex bg-zinc-800 pl-[100px] fixed w-screen select-none'>
+        <div className='z-40 h-[70px] flex bg-zinc-800 fixed w-screen select-none'>
             <div>{profile && <Profile cancel={() => handleClickProfile(false)} />}</div>
             <div>{rechargeCash && <RechargeCash cancel={() => handleClickRechargeCash(false)} />}</div>
             <div>{gameBought && <GameBought cancel={() => handleClickGameBought(false)} />}</div>
@@ -73,14 +73,14 @@ const Navbar = () => {
                 </div>
             </div>}
             <div className='w-1/6 flex'>
-                <a className='flex w-[140px] justify-center items-center cursor-pointer' onClick={() => navigate('/')}>
+                <a className='flex justify-center items-center cursor-pointer w-full' onClick={() => navigate('/')}>
                     <img className='w-[100px] h-[60px]' src={logoPath} alt='logo' />
                 </a>
             </div>
-            <div className='w-1/2 flex items-center pl-[140px]'>
+            <div className='w-2/3 flex items-center justify-center'>
                 <Search />
             </div>
-            <div className='w-1/3 flex items-center justify-end text-gray-300'>
+            <div className='w-1/6 flex items-center justify-end text-gray-300'>
                 <div className='flex items-center mr-[20px]'>
                     <div
                         className='flex select-none items-center'>

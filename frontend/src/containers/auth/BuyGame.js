@@ -89,7 +89,7 @@ export const BuyGame = ({ currentUser, gameId, currentGame }) => {
             </div>
         
             <div className='flex w-full justify-center font-bold text-[30px] mb-[10px]'>{`Buy ${currentGame.name}`.toUpperCase()}</div>
-            {!currentUser.gamesBought.includes(Number(gameId)) ?
+            {!currentUser.gamesBought.includes(currentUser.gamesBought.find(e => e.game_id == Number(gameId))) ?
             <div className='flex flex-col w-full items-center'>
                 <div className={`w-1/2 flex border border-gray-500 justify-between px-[2px] py-[2px] h-[40px] bg-gray-700 bg-opacity-60 rounded-xl`}>
                     <div className='w-1/2 mr-[2px] flex items-center justify-center'>{currentGame.price === 0 ? 'FREE' : `PRICE: ${currentGame.price}$`}</div>

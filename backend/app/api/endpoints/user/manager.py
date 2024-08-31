@@ -49,7 +49,7 @@ async def create_admin(admin: user_schemas.UserCreate, db: Session = Depends(get
 async def delete_user(user_id: int, db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
     if current_user.permission != 'Admin':
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='You are not permitted')
-    db_user = db.query(user_models.User).filter(user_models.User.id == id).first()
+    db_user = db.query(user_models.User).filter(user_models.User.id == user_id).first()
     if db_user is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Not found user')
     db.delete(db_user)

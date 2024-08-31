@@ -227,7 +227,7 @@ const SignUp = () => {
             <button
               className='flex text-[20px] mt-[25px] w-[200px] h-[40px] border border-gray-300 bg-zinc-800 hover:bg-opacity-70 rounded-lg text-gray-300 font-bold tracking-wider items-center justify-center'
               onClick={handleSubmit}
-            >SUBMIT</button>
+            >SIGN UP</button>
             <div className='text-gray-300 text-[15px] mt-[20px]'>
               Do you already have an account yet?
               <a className='underline ml-[6px] hover:text-white' href={path.log_in}>Login</a>

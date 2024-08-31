@@ -46,7 +46,7 @@ const Contact = () => {
           <div className='text-[14px] text-zinc-400 italic'>Usually reply in several minutes...</div>
         </div>
       </div>
-      <div className='w-full min-h-[630px] max-h-[630px] flex flex-col-reverse px-[10px] gap-[10px] py-[15px] overflow-y-scroll'>
+      <div className='w-full min-h-[630px] max-h-[630px] flex flex-col-reverse px-[10px] gap-[10px] pb-[15px] pt-[5px] overflow-y-scroll relative'>
         {message.map((item, index) => (
           <div 
             key={index}
@@ -57,6 +57,7 @@ const Contact = () => {
             <div className={`select-text text-[18px] max-w-[400px] break-words border border-gray-500 ${item.username == currentUser.dataUser?.username ? 'bg-blue-600' : 'bg-zinc-950'} rounded-2xl px-[10px] py-[5px]`}>{item.content}</div>
           </div>
         ))}
+        <div className='w-full flex justify-center'>More messages</div>
       </div>
       <div className='w-full h-[80px] border-t border-gray-500 flex items-center'>
         <input 

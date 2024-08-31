@@ -207,6 +207,7 @@ async def update_game(game_id: int, update_game: game_schemas.GameIn, db: Sessio
     db_game.name = update_game.name
     db_game.price = update_game.price
     db_game.description = update_game.description
+    db_game.download_link = update_game.download_link
     db.commit()
     db.refresh(db_game)
     return {'detail': 'Successfully updated game'}

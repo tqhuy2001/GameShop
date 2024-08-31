@@ -40,7 +40,9 @@ async def recharge_cash(cash: int, db: Session = Depends(get_db), current_user =
 
 @customer.get('/get-games-bought', response_model=list[buying_schemas.CustomerBought])
 async def get_all_games_bought(db: Session = Depends(get_db), current_user = Depends(oauth2.get_current_user)):
-    db_games = db.query(buying_models.Buying.game_id).filter(buying_models.Buying.user_id == current_user.id).all()
+    db_games = (db.query(buying_models.Buying.game_id, game_models.Game.name, game_models.Game.download_link, buying_models.Buying.bought_at)
+                .join(game_models.Game)
+                .filter(buying_models.Buying.user_id == current_user.id).all())
     return db_games
 
 @customer.post('/add-buying/{game_id}', status_code=status.HTTP_200_OK)

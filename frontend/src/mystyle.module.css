@@ -30,3 +30,12 @@
     -webkit-user-drag: none;
     -moz-user-drag: none;
 }
+
+.banner_left_surfing{
+    left: calc(left + 100%);
+    transition: left 0.5s ease-in-out;
+}
+.banner_right_surfing{
+    left: calc(left - 100%);
+    transition: left 0.5s ease-in-out;
+}

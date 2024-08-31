@@ -65,7 +65,7 @@ const Search = () => {
   }, [])
 
   return (
-    <div className='h-[38px] w-[95%] flex relative items-center'>
+    <div className='h-[38px] w-[600px] flex relative items-center'>
         <span className='absolute ml-[8px] flex items-center justify-center text-slate-600 z-[11]'>
             <CiSearch size={24}/>
         </span>
