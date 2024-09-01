@@ -18,7 +18,7 @@ export const Comments = ({ comments }) => {
                             <div className='flex mb-[3px] justify-between'>
                                 <div className='flex items-center'>
                                     <img 
-                                        src={`${process.env.REACT_APP_SERVER_URL}${process.env.REACT_APP_GET_IMAGE}${item.user_avatar}`} 
+                                        src={item.user_avatar}
                                         className='w-[45px] h-[45px] rounded-full mr-[10px]'/>
                                     <div className='flex flex-col justify-center'>
                                         <div className='text-green-500 text-[18px]'>{item.user_username}</div>

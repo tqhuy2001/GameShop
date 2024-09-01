@@ -102,12 +102,12 @@ export const buyGame = (gameId) => new Promise( async (resolve, reject) => {
     }
 })
 
-export const updateAvatar = (file) => new Promise( async (resolve, reject) => {
+export const updateAvatar = (image) => new Promise( async (resolve, reject) => {
     const token = sessionStorage.getItem('token')
     const formData = new FormData()
-    formData.append('file', file)
+    formData.append('image', image)
     try {
-        const response = await axios.post('user/update-avatar', formData, {
+        const response = await axios.patch('user/update-avatar', formData, {
             headers: {
                 'Accept': 'application/json',
                 'Authorization': `Bearer ${token}`,

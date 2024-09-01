@@ -18,7 +18,7 @@ const GameCard = (props) => {
             className={`flex flex-col z-50 bg-zinc-800 rounded-lg w-full select-none h-[300px] transition ease-in-out hover:scale-110 cursor-pointer border border-opacity-50 border-gray-400`} 
             onClick={handleClick}>
                 <div className='rounded-t-lg w-full h-[160px]'>
-                    <img className='rounded-t-lg w-full h-full' src={`${process.env.REACT_APP_SERVER_URL}${process.env.REACT_APP_GET_IMAGE}${item?.main_image}`} alt='GameCard'/>
+                    <img className='rounded-t-lg w-full h-full' src={item?.main_image} alt='GameCard'/>
                 </div>
                 <div className='flex flex-col justify-between px-[10px] pt-[8px] pb-[3px] h-[140px]'>
                     <div>

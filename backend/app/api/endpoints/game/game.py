@@ -1,10 +1,11 @@
+from datetime import timedelta
+
 from fastapi import APIRouter, HTTPException, Depends, status
 from fastapi import File, UploadFile
 from sqlalchemy.orm import Session
 from sqlalchemy import func
-from typing import Annotated
-import os
-import base64
+from firebase_admin import storage
+from sqlalchemy.sql.functions import count
 
 from app.core.dependencies import get_db
 from app.schemas import game as game_schemas
@@ -14,7 +15,6 @@ from app.models import game_like as game_like_models
 from app.models import game_categories as game_categories_models
 from app.schemas import game_categories as game_categories_schemas
 from app.models import game_images as game_images_models
-from app.config import settings
 
 game = APIRouter()
 
@@ -114,75 +114,46 @@ async def update_category(id: int, category: str, db: Session = Depends(get_db),
     return {'detail': 'Successfully updated category of game'}
 
 @game.patch('/update-main-image/{game_id}', status_code=status.HTTP_200_OK)
-async def update_main_image(game_id: int, main_image: Annotated[UploadFile, File()], db: Session = Depends(get_db),
+async def update_main_image(game_id: int, main_image: UploadFile = File(...), db: Session = Depends(get_db),
                             current_user=Depends(oauth2.get_current_user)):
     if current_user.permission != 'Admin' and current_user.permission != 'Staff':
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='You are not permitted')
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='You do not have permission')
     db_game = db.query(game_models.Game).filter(game_models.Game.id == game_id).first()
-    if db_game is None:
+    if not db_game:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Game not found')
-    contents = await main_image.read()
-    parent_dir = settings.games_images_file_path
-    directory = 'game' + str(game_id)
-    path = os.path.join(parent_dir, directory)
-    try:
-        os.mkdir(path)
-    except:
-        pass
-    parent_dir = parent_dir + directory + '/'
-    main_image_name = 'main_image' + '.png'
-    try:
-        file_path = f'{parent_dir}{main_image_name}'
-        with open(file_path, 'wb') as f:
-            f.write(contents)
-    except Exception as e:
-        return {'msg': e.args}
-    t = parent_dir + main_image_name
-    db_game.main_image = base64.b64encode(t.encode())
+
+    bucket = storage.bucket()
+    blob = bucket.blob(f'images/games/game{game_id}/main_image.png')
+    blob.upload_from_file(main_image.file, content_type=main_image.content_type)
+    url = blob.generate_signed_url(expiration=timedelta(days=1000))
+
+    db_game.main_image = url
     db.commit()
-    return {'detail': 'OK'}
+
+    return {'detail': 'Successfully updated main image'}
+
 
 @game.post('/add-images/{game_id}', status_code=status.HTTP_200_OK)
 async def add_images(game_id: int, images: list[UploadFile] = File(...), db: Session = Depends(get_db),
                      current_user=Depends(oauth2.get_current_user)):
     if current_user.permission != 'Admin' and current_user.permission != 'Staff':
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='You are not permitted')
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='You do not have permission')
     db_game = db.query(game_models.Game).filter(game_models.Game.id == game_id).first()
-    if db_game is None:
+    if not db_game:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Game not found')
-    img_games = db.query(game_images_models.GameImages.game_id,
-                         (func.count(game_images_models.GameImages.image)).label('counter')).filter(
-        game_images_models.GameImages.game_id == game_id).group_by(game_images_models.GameImages.game_id).first()
 
-    if img_games is None:
-        i = 1
-    else:
-        i = img_games.counter + 1
+    bucket = storage.bucket()
+    current_amount_images = db.query(func.count(game_images_models.GameImages.image).label('amount')).filter(game_images_models.GameImages.game_id == game_id).first()
+    current_amount_images = current_amount_images.amount + 1
 
     for image in images:
-        contents = await image.read()
-        parent_dir = settings.games_images_file_path
-        directory = 'game' + str(game_id)
-        path = os.path.join(parent_dir, directory)
-        try:
-            os.mkdir(path)
-        except:
-            pass
-        parent_dir = parent_dir + directory + '/'
-        image_name = 'image' + str(i) + '.png'
-        try:
-            file_path = f'{parent_dir}' + f'{image_name}'
-            with open(file_path, 'wb') as f:
-                f.write(contents)
-        except Exception as e:
-            return {'msg': e.args}
-        t = file_path
-        new_image = game_images_models.GameImages(game_id=game_id, image=base64.b64encode(t.encode()))
-        db.add(new_image)
-        db.commit()
-        i += 1
-
-    return {'detail': 'Successfully add images to game'}
+        blob = bucket.blob(f'images/games/game{game_id}/image{current_amount_images}.png')
+        blob.upload_from_file(image.file, content_type=image.content_type)
+        url = blob.generate_signed_url(expiration=timedelta(days=1000))
+        db.add(game_images_models.GameImages(game_id=game_id, image=url))
+        current_amount_images += 1
+    db.commit()
+    return {'detail': 'Successfully updated main image'}
 
 @game.delete('/delete/{game_id}', status_code=status.HTTP_200_OK)
 async def delete_game(game_id: int, db: Session = Depends(get_db), current_user=Depends(oauth2.get_current_user)):

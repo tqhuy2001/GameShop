@@ -84,7 +84,7 @@ const Search = () => {
                 key={index}
                 className='flex hover:bg-zinc-400 cursor-pointer px-[3px] py-[2px] items-center mb-[3px]'
                 onClick={() => handleClickGame(item.id)}>
-                  <img className='w-[50px] h-[40px] mr-[5px]' src={`${process.env.REACT_APP_SERVER_URL}${process.env.REACT_APP_GET_IMAGE}${item?.main_image}`}/>
+                  <img className='w-[50px] h-[40px] mr-[5px]' src={item?.main_image}/>
                   <div className='w-full flex flex-col'>
                     <div className=''>{item.name}</div>
                     <div className='text-gray-600 text-[13px]'>{truncParagraph(item.description, 70)}</div>

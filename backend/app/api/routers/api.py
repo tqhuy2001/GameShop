@@ -1,6 +1,4 @@
 from fastapi import APIRouter
-from fastapi.responses import FileResponse
-import base64
 
 from .game import game_router
 from .customer import customer_router
@@ -11,11 +9,6 @@ from .game_comments import game_comments_router
 from .contact_chat import contact_chat_router
 
 routers = APIRouter()
-
-@routers.get("/get_image")
-async def get_image(image_path: str):
-    url_decoded = base64.b64decode(image_path)
-    return FileResponse(url_decoded.decode())
 
 routers.include_router(customer_router)
 routers.include_router(manager_router)

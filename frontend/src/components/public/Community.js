@@ -32,7 +32,7 @@ const Community = () => {
         {comments?.map((item) => (
           <div key={item.GameComments.id} className='w-full bg-opacity-50 bg-zinc-700 h-1/6 px-[2px]'>
             <div className='flex text-[15px] py-[1px] px-[2px] items-center'>
-              <img className='w-[35px] h-[35px] rounded-full' src={`${process.env.REACT_APP_SERVER_URL}${process.env.REACT_APP_GET_IMAGE}${item.user_avatar}`}/>
+              <img className='w-[35px] h-[35px] rounded-full' src={item.user_avatar}/>
               <div className='w-full ml-[5px] flex flex-col'>
                 <div className='flex'>
                   <span

@@ -92,7 +92,7 @@ const Navbar = () => {
                                 </div>
                             </div>
                             <div className='ml-[10px] w-[55px] h-[50px]'>
-                                <img className='rounded-full w-full h-full' src={`${process.env.REACT_APP_SERVER_URL}${process.env.REACT_APP_GET_IMAGE}${currentUser.dataUser.avatar}`} alt='avatar' />
+                                <img className='rounded-full w-full h-full' src={currentUser.dataUser.avatar} alt='avatar' />
                             </div>
                     </div>
                     <div

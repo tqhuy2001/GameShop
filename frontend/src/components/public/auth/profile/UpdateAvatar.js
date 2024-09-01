@@ -14,7 +14,7 @@ const UpdateAvatar = ({ cancel }) => {
   const SiTicktick = icons.SiTicktick
 
   const avatar = useSelector(state => state.users.currentUser.dataUser.avatar)
-  const [avatarDisplay, setAvatarDisplay] = useState(`${process.env.REACT_APP_SERVER_URL}${process.env.REACT_APP_GET_IMAGE}${avatar}`)
+  const [avatarDisplay, setAvatarDisplay] = useState(`${avatar}`)
 
   const handleUpload = () => {
     setModifyAvatar(true)
@@ -30,7 +30,7 @@ const UpdateAvatar = ({ cancel }) => {
   }
   
   const handleSaveAvatar = async () => {
-    if(avatarDisplay != `${process.env.REACT_APP_SERVER_URL}${process.env.REACT_APP_GET_IMAGE}${avatar}`) {
+    if(avatarDisplay != `${avatar}`) {
       const binaryData = atob(avatarDisplay.split(',')[1])
        const arrayBuffer = new Uint8Array(binaryData.length)
 

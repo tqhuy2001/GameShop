@@ -147,7 +147,7 @@ const GameDetail = () => {
                             onClick={handleNextImage}
                         ><FaChevronRight size={30}/></div>
                     </div>
-                    <img className='w-full h-[530px]' src={`${process.env.REACT_APP_SERVER_URL}${process.env.REACT_APP_GET_IMAGE}${images[currentImage]}`} alt='main-image' />
+                    <img className='w-full h-[530px]' src={images[currentImage]} alt='main-image' />
                 </div>
                 <div className='text-gray-300 mt-[20px] text-[20px]'>
                     {currentGame.description}

@@ -24,8 +24,7 @@ async def create_staff(staff: user_schemas.UserCreate, db: Session = Depends(get
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail='Email already exists')
     hashed_pwd = oauth2.hash(staff.password)
     staff.password = hashed_pwd
-    t = settings.default_avatar_path
-    db_avt = base64.b64encode(t.encode())
+    db_avt = settings.default_avatar
     new_user = user_models.User(**staff.model_dump(), permission='Staff', avatar=db_avt)
     db.add(new_user)
     db.commit()
@@ -38,8 +37,7 @@ async def create_admin(admin: user_schemas.UserCreate, db: Session = Depends(get
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail='Admin user has already existed')
     hashed_pwd = oauth2.hash(admin.password)
     admin.password = hashed_pwd
-    t = settings.default_avatar_path
-    db_avt = base64.b64encode(t.encode())
+    db_avt = settings.default_avatar
     new_user = user_models.User(**admin.model_dump(), permission='Admin', avatar=db_avt)
     db.add(new_user)
     db.commit()

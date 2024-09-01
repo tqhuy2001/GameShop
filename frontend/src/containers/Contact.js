@@ -52,7 +52,7 @@ const Contact = () => {
             key={index}
             className={`w-full gap-[5px] flex ${item.username == currentUser.dataUser?.username ? 'flex-row-reverse' : 'flex-row'}`}>
             <div className='w-[20px] flex items-end pb-[5px]'>
-              <img className='w-[20px] h-[20px] rounded-full' src={`${process.env.REACT_APP_SERVER_URL}${process.env.REACT_APP_GET_IMAGE}${item.avatar}`} alt='Avatar'/>
+              <img className='w-[20px] h-[20px] rounded-full' src={item.avatar} alt='Avatar'/>
             </div>
             <div className={`select-text text-[18px] max-w-[400px] break-words border border-gray-500 ${item.username == currentUser.dataUser?.username ? 'bg-blue-600' : 'bg-zinc-950'} rounded-2xl px-[10px] py-[5px]`}>{item.content}</div>
           </div>

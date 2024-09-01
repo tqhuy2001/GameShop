@@ -23,8 +23,7 @@ async def create_customer(user: user_schemas.UserCreate, db: Session = Depends(g
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail='Email has already existed')
     hashed_pwd = oauth2.hash(user.password)
     user.password = hashed_pwd
-    t = settings.default_avatar_path
-    db_avt = base64.b64encode(t.encode())
+    db_avt = settings.default_avatar
     new_user = user_models.User(**user.model_dump(), permission='Customer', avatar=db_avt)
     db.add(new_user)
     db.commit()

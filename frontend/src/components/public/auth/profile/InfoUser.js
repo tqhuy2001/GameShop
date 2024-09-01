@@ -8,7 +8,7 @@ const InfoUser = ({ cancel }) => {
   return (
     <div className='flex flex-col w-full h-full'>
         <div className='flex flex-col w-full h-full px-[10px] py-[10px] items-center'>
-          <img className='w-[110px] mt-[15px] h-[110px] rounded-full' src={`${process.env.REACT_APP_SERVER_URL}${process.env.REACT_APP_GET_IMAGE}${currentUser.dataUser.avatar}`} alt='avatar'/>
+          <img className='w-[110px] mt-[15px] h-[110px] rounded-full' src={currentUser.dataUser.avatar} alt='avatar'/>
           <div className='mt-[30px] flex'>
             <div className='flex flex-col gap-[10px]'>
               <div className='ml-[10px] text-[20px] flex font-bold'>Display name/Username</div>

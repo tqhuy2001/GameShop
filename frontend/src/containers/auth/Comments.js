@@ -32,7 +32,7 @@ export const Comments = ({ comments, currentUser, gameId, getComments }) => {
             <div className='w-full flex flex-col bg-zinc-900 px-[10px] py-[5px] pb-[10px] rounded-lg h-auto'>
                 <div className='flex items-center mb-[10px]'>
                     <img 
-                        src={`${process.env.REACT_APP_SERVER_URL}${process.env.REACT_APP_GET_IMAGE}${currentUser.dataUser.avatar}`} 
+                        src={currentUser.dataUser.avatar} 
                         className='w-[45px] h-[45px] rounded-full mr-[10px]'/>
                     <div className='text-green-500 text-[18px]'>{currentUser.dataUser.username}</div>
                 </div>
@@ -56,7 +56,7 @@ export const Comments = ({ comments, currentUser, gameId, getComments }) => {
                             <div className='flex mb-[3px] justify-between'>
                                 <div className='flex items-center'>
                                     <img 
-                                        src={`${process.env.REACT_APP_SERVER_URL}${process.env.REACT_APP_GET_IMAGE}${item.user_avatar}`} 
+                                        src={item.user_avatar} 
                                         className='w-[45px] h-[45px] rounded-full mr-[10px]'/>
                                     <div className='flex flex-col justify-center'>
                                         <div className='text-green-500 text-[18px]'>{item.user_username}</div>

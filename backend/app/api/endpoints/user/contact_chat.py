@@ -18,7 +18,6 @@ class ConnectionManager:
                 self.disconnect(connection['ws'])
         await websocket.accept()
         self.active_connections.append({'client_id': client_id, 'ws': websocket})
-        print(manager.active_connections)
 
     def disconnect(self, websocket: WebSocket):
         for connection in self.active_connections:

@@ -13,7 +13,7 @@ class Game(Base):
     description = Column(String(14000), nullable=False, server_default='')
     create_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
     user_created_name = Column(String(50), ForeignKey(('users.username'), ondelete='NO ACTION'), nullable=False)
-    main_image = Column(String(100), nullable=False, server_default='')
+    main_image = Column(String(1000), nullable=False, server_default='')
     main_category = Column(String(100), nullable=False, server_default='')
     download_link = Column(String(100), nullable=False, server_default='')
 
