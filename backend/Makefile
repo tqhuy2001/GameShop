@@ -14,7 +14,7 @@ freeze:
 	pip freeze > requirements.txt
 
 ready:
-	python3 -m venv .venv
-	.venv/bin/activate.bat
-	.venv/bin/activate.ps1
+	python -m venv .venv
+	.venv/Scripts/activate.bat
+	.venv/Scripts/activate.ps1
 	pip install -r requirements.txt

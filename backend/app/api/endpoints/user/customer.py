@@ -1,6 +1,5 @@
 from fastapi import APIRouter, HTTPException, Depends, status
 from sqlalchemy.orm import Session
-import base64
 
 from app.core.dependencies import get_db
 from app.schemas import user as user_schemas
