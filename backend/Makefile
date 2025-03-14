@@ -1,11 +1,14 @@
 run:
-	uvicorn app.main:app --reload --port 8001
+	uvicorn app.main:app --reload --port $(port)
 
 heads:
 	alembic heads
 
-migrate:
+migrate-up:
 	alembic upgrade head
+
+migrate-down:
+	alembic downgrade -1
 
 revision:
 	revision.bat
