@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ChangePassword, InfoUser, UpdateAvatar } from './profile'
+import { ChangePassword, InfoUser, UpdateAvatar } from './profileComp'
 
 export const Profile = ({ cancel }) => {
     const [tabDisplay, setTabDisplay] = useState({

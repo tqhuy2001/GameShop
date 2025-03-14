@@ -55,7 +55,7 @@ export const getExistedLogin = () => async (dispatch) => {
         const gamesBought = await getGamesBought()
         const gamesLiked = await getGamesLiked()
         const token = sessionStorage.getItem('token')
-        const wsUser = new WebSocket(`ws://localhost:8000/contact-chat/${token}`)
+        const wsUser = new WebSocket(`ws://localhost:8001/contact-chat/${token}`)
 
         dispatch({
             type: actionTypes.LOGIN,
@@ -120,7 +120,7 @@ export const login = (data, isRemembered) => async (dispatch) => {
         const dataUser = await getInfoCurrentUser()
         const gamesBought = await getGamesBought()
         const token = sessionStorage.getItem('token')
-        const wsUser = new WebSocket(`ws://localhost:8000/contact-chat/${token}`)
+        const wsUser = new WebSocket(`ws://localhost:8001/contact-chat/${token}`)
 
         dispatch({
             type: actionTypes.LOGIN,
