@@ -1,5 +1,5 @@
 run:
-	uvicorn app.main:app --reload --port 8000
+	uvicorn app.main:app --reload --port 8001
 
 heads:
 	alembic heads
@@ -8,7 +8,7 @@ migrate:
 	alembic upgrade head
 
 revision:
-	./revision.sh
+	revision.bat
 
 freeze:
 	pip freeze > requirements.txt
